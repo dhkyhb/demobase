@@ -1,0 +1,85 @@
+git add readme.txt
+git commit -m "addFile"
+
+git reset --hard "commit_id" 回退版本
+
+git status 查看改变的文件状态
+
+git commit --amend 取消上一次的暂存区提交
+
+git commit -m "addFile" -a //不用 add 就可以提交
+
+git checkout -- "readme.txt" //把暂缓区的文件 覆盖工作区的文件
+
+git reset HEAD readme.txt //把暂缓区的文件撤销
+
+git rm test.txt //删除
+
+要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+
+关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+git clone git@github.com:michaelliao/gitskills.git
+
+--------分支管理
+git branch dev  创建分支 dev
+git checkout dev 切换到分支 dev
+合并写法
+git checkout -b dev
+
+git branch 查看分支
+
+git checkout master 切换回主分支
+git merge dev        合并dev分支
+
+git branch -d dev 删除分支
+
+-------------合并
+git merge feature1  在主分支上合并feature1 分支
+修改冲突后
+git add readme.txt              提交文件
+git commit -m "conflict fixed"
+
+-----------bug 分支
+场景：目前正在子分支dev中开发一个功能。但是要放下手上的工作去处理主分支上的bug
+git stash   保存当前工作状态
+
+切换到主分支，创建bug分支 ，解决合并，切换到dev分支
+git status
+git stash list   查看保存工作状态
+git stash apply  恢复保存的工作状态
+git stash drop   删除保存的工作状态
+git stash pop    恢复 并且 删除 工作状态
+
+----------删除没有合并过的分支
+分支开发 然后废弃掉
+$ git branch -D feature-vulcan
+
+
+$ git push origin master  把该分支上的所有本地提交推送到远程库
+$ git push origin dev    如果要推送其他分支，比如dev，就改成：
+
+//rebase操作可以把本地未push的分叉提交历史整理成直线；
+//rebase的目的是使得我们在查看历史提交的变化时更容易，因为分叉的提交需要三方对比。
+git rebase
+
+-------标签
+$ git tag 查看所有标签
+$ git tag v1.0 打标签
+$ git tag v0.9 f52c633  给以前的一个版本打标签
+$ git show v0.9    查看这个标签版本的提交信息
+
+git push origin
+<tagname>可以推送一个本地标签
+    git push origin --tags可以推送全部未推送过的本地标签
+    git tag -d
+    <tagname>可以删除一个本地标签
+        git push origin :refs/tags/
+        <tagname>可以删除一个远程标签
+
+            //生成 sshkey
+            ssh-keygen -t rsa -C "243823965@qq.com" 连敲两次回车键
+            会在本地C:\Users\你的用户名.ssh生成文件夹，里面有id_rsa和id_rsa.pub两个文件
+            然后复制id_rsa.pub文件里面的内容

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">5.3333dp</dimen>
+    <dimen name="activity_vertical_margin">5.3333dp</dimen>
+    <dimen name="dp40">180.0000dp</dimen>
+    <dimen name="dp41">180.0000dp</dimen>
+    <dimen name="dp50">720</dimen>
+    <dimen name="sp50">16.6667sp</dimen>
+</resources>
