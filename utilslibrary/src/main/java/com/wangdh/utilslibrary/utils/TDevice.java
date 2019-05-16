@@ -35,9 +35,15 @@ public class TDevice {
 
     public static void init(Context context) {
         mcontext = context;
-        getScreenWidth();
-        getScreenHeight();
-        getDensity();
+        try {
+            float screenWidth = getScreenWidth();
+            getScreenHeight();
+            float density = getDensity();
+            String div = Arith.div(String.valueOf(screenWidth), String.valueOf(density));
+            Log.e(TAG, "最短宽：" + div);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static int getDefaultLoadFactor() {
