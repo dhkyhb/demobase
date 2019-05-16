@@ -12,6 +12,6 @@ import com.wangdh.utilslibrary.utils.sp.SP;
 public class DemoConfig {
     private static final String TAG = DemoConfig.class.getName() + ".";
 
-    @SP(value = "", type = String.class)
+    @SP(value = "海波", type = String.class)
     public static final String demo = TAG + "demo";
 }
