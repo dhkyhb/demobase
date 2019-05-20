@@ -15,8 +15,11 @@ import com.wangdh.utilslibrary.utils.logger.TLog;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -67,19 +70,11 @@ public class StandardRXOnline {
         onlineContext.setContext(context);
         onlineContext.setOnlineConfig(onlineConfig);
         onlineContext.setUrl(url);
-        Observable observable;
-        if (getLifecycleProvider() != null && getEvent()!=null) {
-            TLog.e("执行生命周期监听");
-            LifecycleTransformer lifecycleTransformer = getLifecycleProvider().bindUntilEvent(getEvent());
-            observable = obs.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .compose(lifecycleTransformer);
-        } else {
-            observable = obs.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
-        }
-        observable.subscribe(observer);
-
+        TLog.e("执行生命周期监听");
+        obs.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(transformer())
+                .subscribe(observer);
     }
 
     //按照默认配置初始化 Retrofit
@@ -151,6 +146,18 @@ public class StandardRXOnline {
             this.setLifecycleProvider((LifecycleProvider) context);
         }
         this.context = context;
+    }
+
+    private ObservableTransformer transformer() {
+        return new ObservableTransformer() {
+            @Override
+            public ObservableSource apply(Observable upstream) {
+                if (getLifecycleProvider() != null && getEvent() != null) {
+                    return upstream.compose(getLifecycleProvider().bindUntilEvent(getEvent()));
+                }
+                return upstream;
+            }
+        };
     }
 
     // 设置联机 场景  。 activity、fragment、dialog、service 等 目前就写2个
