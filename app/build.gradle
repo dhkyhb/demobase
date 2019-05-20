@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 
+static def releaseTime() {
+    return new Date().format("yyyy_MM_dd_HH_mm_ss", TimeZone.getTimeZone("UTC"))
+}
 greendao {
 //    schemaVersion 2
     daoPackage 'com.wangdh.demolist.greedao'
@@ -9,8 +12,16 @@ greendao {
 }
 
 android {
+    signingConfigs {
+        demo_key {
+            keyAlias 'keyAlias'
+            keyPassword 'aliaspw'
+//            storeFile file('D:/Android/code_2019/DemoBase/keystore/sign_demo.keystore')
+            storeFile file('../keystore/app_sign.jks')
+            storePassword 'signpw'
+        }
+    }
     compileSdkVersion 28
-
     defaultConfig {
         applicationId "com.wangdh.demolist"
         minSdkVersion 15
@@ -26,6 +37,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.demo_key
         }
     }
     productFlavors {
@@ -41,10 +53,10 @@ dependencies {
     //    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     //    implementation 'com.android.support:support-v4:28.0.0-alpha3'
     //    implementation 'org.greenrobot:greendao:3.2.0'
-//    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
-//    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    //    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    //    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     //    compile 'pro.useit.recyclerview:easyrecycler:1.0.8'
-//    implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
+    //    implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
     //添加LeakCanary内存泄漏检测工具
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     //    http://repo1.maven.org/maven2/com/alibaba/fastjson/
