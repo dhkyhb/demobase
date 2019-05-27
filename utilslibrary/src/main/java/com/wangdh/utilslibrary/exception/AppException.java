@@ -7,7 +7,7 @@ package com.wangdh.utilslibrary.exception;
  */
 public class AppException extends Throwable{
 
-    public AppException(String errorCode){
+    public AppException(String errorCode, String reason){
 
     }
     public AppException(Throwable e){

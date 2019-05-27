@@ -14,6 +14,10 @@ public class OnlineConfig {
     public int time_out = 10000;
 
     public static OnlineConfig getDefConfig() {
-        return new OnlineConfig();
+        return InternalConfig.config;
+    }
+
+    static class InternalConfig{
+        private static final OnlineConfig config = new OnlineConfig();
     }
 }
