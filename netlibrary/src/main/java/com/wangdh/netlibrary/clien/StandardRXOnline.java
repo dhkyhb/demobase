@@ -111,7 +111,7 @@ public class StandardRXOnline {
                 .doOnDispose(new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.e(StandardRXOnline.class.getSimpleName(), "The OBservable onIdspose()");
+                        Log.e(StandardRXOnline.class.getSimpleName(), "The Observable onDispose()");
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -192,8 +192,8 @@ public class StandardRXOnline {
     }
 
     private <T> AutoDisposeConverter<T>  transformer() {
-        return autoDisposable(AndroidLifecycleScopeProvider.from(getLifecycleOwner(), (getEvent() != null ? getEvent() : Lifecycle.Event.ON_STOP)));
-
+        return autoDisposable(AndroidLifecycleScopeProvider
+                .from(getLifecycleOwner(), (getEvent() != null ? getEvent() : Lifecycle.Event.ON_STOP)));
     }
 
     // 设置联机 场景  。 activity、fragment、dialog、service 等 目前就写2个
