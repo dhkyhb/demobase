@@ -348,7 +348,6 @@ public class SPFactory {
 
             }
 
-
         } else if (isString(type)) {
             saveValue = SPBaseTools.get(k, String.valueOf(defValue));
         } else if (isLong(type)) {

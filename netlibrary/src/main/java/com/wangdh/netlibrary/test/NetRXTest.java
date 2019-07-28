@@ -1,5 +1,6 @@
 package com.wangdh.netlibrary.test;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -9,10 +10,10 @@ import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.wangdh.netlibrary.clien.OnlineContext;
 import com.wangdh.netlibrary.clien.OnlineListener;
+import com.wangdh.netlibrary.server.BaseResponse;
 import com.wangdh.netlibrary.server.XH_RXOnline;
 import com.wangdh.netlibrary.server.xiaohua.API_Xiaohua;
 import com.wangdh.netlibrary.server.xiaohua.XiaohuaBody;
-import com.wangdh.netlibrary.server.xiaohua.XiaohuaRespose;
 import com.wangdh.utilslibrary.exception.AppException;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
@@ -96,11 +97,11 @@ public class NetRXTest {
         API_Xiaohua api = retrofit.create(API_Xiaohua.class);
         //调用方法得到一个Call
         //call; //= api.xhList("desc",1,3,"4bccc3f1ee021fd12621dfffb8ddcfcf","1418816972");
-        Call<XiaohuaRespose> call = api.xhList2();
+        Call<BaseResponse> call = api.xhList2();
         //进行网络请求
-        call.enqueue(new Callback<XiaohuaRespose>() {
+        call.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<XiaohuaRespose> call, Response<XiaohuaRespose> response) {
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 int code = response.code();
                 TLog.e("code:" + code);
                 TLog.e("message:" + response.message());
@@ -110,7 +111,7 @@ public class NetRXTest {
             }
 
             @Override
-            public void onFailure(Call<XiaohuaRespose> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -132,9 +133,9 @@ public class NetRXTest {
         API_Xiaohua api = retrofit.create(API_Xiaohua.class);
 
 
-        DisposableObserver<XiaohuaRespose> disposableObserver = new DisposableObserver<XiaohuaRespose>() {
+        DisposableObserver<BaseResponse> disposableObserver = new DisposableObserver<BaseResponse>() {
             @Override
-            public void onNext(XiaohuaRespose movieSubject) {
+            public void onNext(BaseResponse movieSubject) {
                 TLog.e(movieSubject.toString());
 //                List<MovieSubject.SubjectsBean> subjects = movieSubject.getSubjects();
 //                for (MovieSubject.SubjectsBean subject : subjects) {
@@ -245,15 +246,16 @@ public class NetRXTest {
 
     public static void test(Context context) {
         XH_RXOnline online = new XH_RXOnline();
-        if (context instanceof LifecycleProvider) {
-            online.setLifecycleProvider((LifecycleProvider) context);
+        if (context instanceof LifecycleOwner) {
+            online.setLifecycleOwner((LifecycleOwner) context);
 //            online.setCloseEvent(ActivityEvent.RESUME);
         }
         API_Xiaohua api = online.getAPI(API_Xiaohua.class);
-        online.connect(api.xhList(), new OnlineListener<XiaohuaRespose<XiaohuaBody>>() {
+        online.connectFuc(api.xhList(), new OnlineListener() {
             @Override
-            public void succeed(XiaohuaRespose<XiaohuaBody> xiaohuaBodyXiaohuaRespose, OnlineContext context) {
-                int size = xiaohuaBodyXiaohuaRespose.getBody().getList().size();
+            public void succeed(Object o, OnlineContext context) {
+                BaseResponse<XiaohuaBody> xiaohuaBodyXiaohuaRespose = (BaseResponse<XiaohuaBody>) o;
+                int size = xiaohuaBodyXiaohuaRespose.getResult().getList().size();
                 TLog.e("收到的笑话集合大小为：" + size);
             }
 
@@ -305,9 +307,9 @@ public class NetRXTest {
         //获取接口实例
         API_Xiaohua api = retrofit.create(API_Xiaohua.class);
 
-        DisposableObserver<XiaohuaRespose> disposableObserver = new DisposableObserver<XiaohuaRespose>() {
+        DisposableObserver<BaseResponse> disposableObserver = new DisposableObserver<BaseResponse>() {
             @Override
-            public void onNext(XiaohuaRespose bean) {
+            public void onNext(BaseResponse bean) {
                 TLog.e(bean.toString());
 //                List<MovieSubject.SubjectsBean> subjects = movieSubject.getSubjects();
 //                for (MovieSubject.SubjectsBean subject : subjects) {

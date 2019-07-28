@@ -26,4 +26,5 @@ public abstract class OnlineObserver<T> extends DisposableObserver<T> {
     public void setContext(OnlineContext context) {
         this.context = context;
     }
+
 }

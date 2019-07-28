@@ -1,14 +1,13 @@
 package com.wangdh.netlibrary.server.xiaohua;
 
+import com.wangdh.netlibrary.server.BaseResponse;
+
 /**
  * @author wangdh
  * @time 2019/5/13 17:29
  * @describe
  */
-public class XiaohuaRespose<T> {
-    private String reason;
-    private int error_code;
-    private T result;
+public class XiaohuaRespose<T> extends BaseResponse<T> {
 
     @Override
     public String toString() {

@@ -3,7 +3,6 @@ package com.wangdh.netlibrary.server;
 import com.wangdh.netlibrary.clien.OnlineListener;
 import com.wangdh.netlibrary.clien.OnlineObserver;
 import com.wangdh.netlibrary.clien.StandardRXOnline;
-import com.wangdh.netlibrary.server.xiaohua.XiaohuaRespose;
 import com.wangdh.utilslibrary.exception.AppException;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
@@ -18,8 +17,8 @@ import io.reactivex.Observable;
  */
 public class XH_RXOnline extends StandardRXOnline {
 
-    public void connect(Observable obs, OnlineListener listener) {
-        OnlineObserver<XiaohuaRespose> disposableObserver = new OnlineObserver<XiaohuaRespose>() {
+    public <T> void connectFuc(Observable<? extends BaseResponse<T>> obs, OnlineListener<BaseResponse<T>> listener) {
+        OnlineObserver<BaseResponse<T>> disposableObserver = new OnlineObserver<BaseResponse<T>>() {
             @Override
             protected void onStart() {
                 super.onStart();
@@ -27,7 +26,7 @@ public class XH_RXOnline extends StandardRXOnline {
             }
 
             @Override
-            public void onNext(XiaohuaRespose bean) {
+            public void onNext(BaseResponse<T> bean) {
 //                TLog.e("返回：" + bean.toString());
                 TLog.e("返回：" + Thread.currentThread().getName());
                 try {
@@ -60,7 +59,7 @@ public class XH_RXOnline extends StandardRXOnline {
         disposableObserver.setContext(null);
         disposableObserver.setListener(listener);
 
-        connect(obs, disposableObserver);
+        this.connect(obs, disposableObserver);
     }
 
     /**
@@ -69,14 +68,14 @@ public class XH_RXOnline extends StandardRXOnline {
      * @param bean
      * @throws AppException
      */
-    public void check(XiaohuaRespose bean) throws AppException {
+    public void check(BaseResponse bean) throws AppException {
         if (bean == null) {
-            throw new AppException("1");
+            throw new AppException("1", "数据不完整");
         }
 
         if (bean.getError_code() != 0) {
             String reason = bean.getReason();
-            throw new AppException("1");
+            throw new AppException("1", reason);
         }
         //......
     }
