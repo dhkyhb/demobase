@@ -39,6 +39,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.demo_key
         }
+        debug {
+            signingConfig signingConfigs.demo_key
+        }
     }
     productFlavors {
     }
@@ -66,4 +69,6 @@ dependencies {
     implementation project(':dblibrary')
     implementation project(':utilslibrary')
     implementation project(':netlibrary')
+    //https://www.jianshu.com/p/10b80cafa2b9 二维码相关
+    implementation 'com.google.zxing:core:3.3.0'
 }

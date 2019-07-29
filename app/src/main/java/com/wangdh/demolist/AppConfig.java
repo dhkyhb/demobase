@@ -43,7 +43,8 @@ public class AppConfig {
     public static final String KEY_NIGHT_MODE_SWITCH = "night_mode_switch";
 
     public static final String APP_QQ_KEY = "100942993";
-
+//            /storage/emulated/0/wdh/wdh_img/
+//            /storage/emulated/0/wdh/download/
     // 默认存放图片的路径
     public final static String DEFAULT_SAVE_IMAGE_PATH = Environment
             .getExternalStorageDirectory()

@@ -21,7 +21,6 @@ public class AppContext extends BaseApplication {
 //        InstallAPK.install(s);
         TLog.e("AppContext");
         DBLibrary.init(this);
-
     }
 
     public static String getPmsg() {
