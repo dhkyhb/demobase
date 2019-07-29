@@ -8,8 +8,6 @@ import com.wangdh.dblibrary.DBTest;
 import com.wangdh.demolist.R;
 import com.wangdh.netlibrary.NetTest;
 
-import java.util.logging.Logger;
-
 
 /**
  * 测试  hdip  mdip ldip 图片的
