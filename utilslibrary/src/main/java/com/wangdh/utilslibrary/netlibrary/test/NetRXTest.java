@@ -1,4 +1,4 @@
-package com.wangdh.netlibrary.test;
+package com.wangdh.utilslibrary.netlibrary.test;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
@@ -6,13 +6,13 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.parkingwang.okhttp3.LogInterceptor.LogInterceptor;
-import com.wangdh.netlibrary.clien.OnlineContext;
-import com.wangdh.netlibrary.clien.OnlineListener;
-import com.wangdh.netlibrary.server.BaseResponse;
-import com.wangdh.netlibrary.server.XH_RXOnline;
-import com.wangdh.netlibrary.server.xiaohua.API_Xiaohua;
-import com.wangdh.netlibrary.server.xiaohua.XiaohuaBody;
 import com.wangdh.utilslibrary.exception.AppException;
+import com.wangdh.utilslibrary.netlibrary.clien.OnlineContext;
+import com.wangdh.utilslibrary.netlibrary.clien.OnlineListener;
+import com.wangdh.utilslibrary.netlibrary.server.BaseResponse;
+import com.wangdh.utilslibrary.netlibrary.server.XH_RXOnline;
+import com.wangdh.utilslibrary.netlibrary.server.xiaohua.API_Xiaohua;
+import com.wangdh.utilslibrary.netlibrary.server.xiaohua.XiaohuaBody;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
 import java.io.IOException;

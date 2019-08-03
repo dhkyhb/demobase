@@ -1,4 +1,4 @@
-package com.wangdh.netlibrary.clien;
+package com.wangdh.utilslibrary.netlibrary.clien;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.Lifecycle;

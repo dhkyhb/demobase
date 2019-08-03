@@ -22,35 +22,19 @@ public class TimeUtils {
         return "";
     }
 
-    public static String hhmmss() {
-        Date now = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat("HH:mm:ss");
-        String format = ft.format(now);
-        return format;
-    }
-
-    /*
+    /**
      * 将时间转换为时间戳
+     * @param s 2019/07/29 比如这样的
+     * @param format yyy/MM/dd
+     * @return
+     * @throws ParseException
      */
-    public static String dateToStamp(String s) throws ParseException {
+    public static long dateToStamp(String s,String format) throws ParseException {
         String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
         Date date = simpleDateFormat.parse(s);
         long ts = date.getTime();
-        res = String.valueOf(ts);
-        return res;
-    }
-
-    /*
-     * 将时间戳转换为时间
-     */
-    public static String stampToDate(String s) {
-        String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long lt = new Long(s);
-        Date date = new Date(lt);
-        res = simpleDateFormat.format(date);
-        return res;
+        return ts;
     }
 
     /**
@@ -93,5 +77,26 @@ public class TimeUtils {
     public static String getNowTimeByFormat(String f) {
         SimpleDateFormat sdf = new SimpleDateFormat(f);
         return sdf.format(new Date());
+    }
+    public static final String format_1 = "yyyy-MM-dd HH:mm:ss";
+    public static final String format_2 = "yyyyMMddHHmmss";
+    public static final String format_3 = "HH:mm:ss";
+
+    public static String getTime(long time,String format){
+        String res ="";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        Date date = new Date(time);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
+
+    public static String getCurrentTime(String format){
+        long time = System.currentTimeMillis();
+        String time1 = getTime(time, format);
+        return time1;
+    }
+
+    public static String getFormat2ByCurrent(){
+        return getCurrentTime(format_2);
     }
 }

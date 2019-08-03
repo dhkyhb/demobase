@@ -1,22 +1,24 @@
-package com.wangdh.netlibrary;
+package com.wangdh.utilslibrary.netlibrary;
 
 import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 
-import com.wangdh.netlibrary.clien.OnlineConfig;
-import com.wangdh.netlibrary.clien.OnlineContext;
-import com.wangdh.netlibrary.clien.OnlineListener;
-import com.wangdh.netlibrary.server.BaseResponse;
-import com.wangdh.netlibrary.server.XH_RXOnline;
-import com.wangdh.netlibrary.server.weather.API_Weather;
-import com.wangdh.netlibrary.server.weather.ResultBean;
-import com.wangdh.netlibrary.server.xiaohua.API_Xiaohua;
-import com.wangdh.netlibrary.server.xiaohua.XiaoHuaContent;
-import com.wangdh.netlibrary.server.xiaohua.XiaohuaBody;
+
 import com.wangdh.utilslibrary.exception.AppException;
+import com.wangdh.utilslibrary.netlibrary.clien.OnlineConfig;
+import com.wangdh.utilslibrary.netlibrary.clien.OnlineContext;
+import com.wangdh.utilslibrary.netlibrary.clien.OnlineListener;
+import com.wangdh.utilslibrary.netlibrary.server.BaseResponse;
+import com.wangdh.utilslibrary.netlibrary.server.XH_RXOnline;
+import com.wangdh.utilslibrary.netlibrary.server.weather.API_Weather;
+import com.wangdh.utilslibrary.netlibrary.server.weather.ResultBean;
+import com.wangdh.utilslibrary.netlibrary.server.xiaohua.API_Xiaohua;
+import com.wangdh.utilslibrary.netlibrary.server.xiaohua.XiaoHuaContent;
+import com.wangdh.utilslibrary.netlibrary.server.xiaohua.XiaohuaBody;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
-import static com.wangdh.netlibrary.server.weather.API_Weather.WEATHER_URL;
+import static com.wangdh.utilslibrary.netlibrary.server.weather.API_Weather.WEATHER_URL;
+
 
 /**
  * @author wangdh
