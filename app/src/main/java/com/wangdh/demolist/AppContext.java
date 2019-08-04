@@ -1,6 +1,5 @@
 package com.wangdh.demolist;
 
-import com.wangdh.dblibrary.DBLibrary;
 import com.wangdh.demolist.base.BaseApplication;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
@@ -20,7 +19,6 @@ public class AppContext extends BaseApplication {
 //        String s = AppContext.getPmsg() + "/apk/ad.apk";
 //        InstallAPK.install(s);
         TLog.e("AppContext");
-        DBLibrary.init(this);
     }
 
     public static String getPmsg() {

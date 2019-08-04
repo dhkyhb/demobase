@@ -7,10 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
 
     <!-- 静默安装 -->
     <!-- <uses-permission android:name="android.permission.INSTALL_PACKAGES" /> -->
@@ -18,7 +15,8 @@
 
     <!-- Android 8.0 app 内自动更新安装失败,闪退的问题要添加如下权限 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!--      android:supportsRtl="true"-->
+
+    <!-- android:supportsRtl="true" -->
     <application
         android:name=".AppContext"
         android:allowBackup="true"
@@ -48,7 +46,12 @@
         <!-- </receiver> -->
 
         <activity android:name=".ui.updata.UpAPPActivity" />
-        <!--<activity android:name=".ui.px.PXActivity"></activity>-->
+        <!-- <activity android:name=".ui.px.PXActivity"></activity> -->
+        <service
+            android:name=".service.PService"
+            android:enabled="true"
+            android:process=":servicePrivate"
+            android:exported="true"></service>
     </application>
 
 </manifest>
