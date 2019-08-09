@@ -5,7 +5,7 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * @author wangdh
  * @time 2019/5/15 17:08
- * @describe
+ * @describe DisposableObserver 只能定位一次， 使用后销毁
  */
 public abstract class OnlineObserver<T> extends DisposableObserver<T> {
     protected OnlineListener listener;

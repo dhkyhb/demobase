@@ -152,14 +152,19 @@ public class TDevice {
     }
 
 
-    //网络
-    public static boolean isNetworkConnected() {
-        // 判断网络是否连接
-        ConnectivityManager connectivityManager = (ConnectivityManager) context().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mobNetInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        NetworkInfo wifiNetInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (mobNetInfo.isConnected() || wifiNetInfo.isConnected()) {
-            return true;
+    // 判断网络是否连接
+    public static boolean isNetworkConnected(Context context) {
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isAvailable()) {
+                //有网处理
+                return true;
+            } else {
+                //无网显示个提示什么的
+            }
+        } catch (Exception e) {
+            //ignore
         }
         return false;
     }
@@ -173,6 +178,4 @@ public class TDevice {
             return false;
         }
     }
-
-
 }

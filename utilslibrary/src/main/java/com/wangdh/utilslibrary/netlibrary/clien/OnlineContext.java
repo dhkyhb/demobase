@@ -2,6 +2,8 @@ package com.wangdh.utilslibrary.netlibrary.clien;
 
 import android.content.Context;
 
+import java.util.Map;
+
 /**
  * @author wangdh
  * @time 2019/5/15 16:41
@@ -10,6 +12,9 @@ import android.content.Context;
 public class OnlineContext {
     protected Context context;
     private OnlineConfig onlineConfig;
+
+    private Map data;
+
     protected String url;
 
 

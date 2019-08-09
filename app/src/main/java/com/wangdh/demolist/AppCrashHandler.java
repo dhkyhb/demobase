@@ -1,8 +1,12 @@
 package com.wangdh.demolist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Looper;
 import android.widget.Toast;
+
+import com.wangdh.demolist.service.PService;
+import com.wangdh.utilslibrary.utils.root.Shell;
 
 /**
  * Created by JuQiu
@@ -45,13 +49,21 @@ public class AppCrashHandler implements Thread.UncaughtExceptionHandler {
             return false;
         }
         ex.printStackTrace();
-
+//        Intent intent = new Intent(mContext, PService.class);
+//        intent.putExtra("key",ex.getMessage());
+//        mContext.startService(intent);
         new Thread() {
             @Override
             public void run() {
+                try {
+                    new Shell().writeLog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 Looper.prepare();
                 Toast.makeText(mContext, "Demo出现未知异常,即将退出.", Toast.LENGTH_LONG).show();
                 Looper.loop();
+
             }
         }.start();
 

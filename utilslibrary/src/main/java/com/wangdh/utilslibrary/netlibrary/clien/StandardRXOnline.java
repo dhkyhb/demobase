@@ -4,25 +4,19 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.parkingwang.okhttp3.LogInterceptor.LogInterceptor;
 import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.ObservableSubscribeProxy;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
-import com.wangdh.utilslibrary.utils.logger.TLog;
-
-import java.util.concurrent.TimeUnit;
+import com.wangdh.utilslibrary.exception.AppException;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.uber.autodispose.AutoDispose.autoDisposable;
 
@@ -34,31 +28,23 @@ import static com.uber.autodispose.AutoDispose.autoDisposable;
  * 3.调用 connect 进行绑定
  */
 public class StandardRXOnline {
-
-    private OnlineConfig onlineConfig;
-
-    protected Retrofit retrofit;
-
-    protected String url;
+    protected OnlineConfig onlineConfig;
 
     protected OnlineContext onlineContext;
 
     protected LifecycleOwner lifecycleOwner;
 
-
     protected Context context;
 
-    //获得联机配置属性
-    public OnlineConfig getOnlineConfig() {
-        if (onlineConfig == null) {
-            onlineConfig = OnlineConfig.getDefConfig();
-        }
-        return onlineConfig;
+    /**
+     * 如果一个服务器 有独特的配置 子类应该重写配置
+     */
+    public void initOnlineConfig() {
+        onlineConfig = OnlineConfig.getDefConfig();
     }
 
-    public void setUrl(String Url) {
-        this.onlineConfig.url = Url;
-        this.url = Url;
+    public OnlineConfig getOnlineConfig() {
+        return onlineConfig;
     }
 
     public StandardRXOnline() {
@@ -66,72 +52,82 @@ public class StandardRXOnline {
     }
 
     private void init() {
-        getOnlineConfig();
+        initOnlineConfig();
+        onlineConfig = getOnlineConfig();
+        onlineConfig.build();
+
         onlineContext = new OnlineContext();
-        initDefRetrofit();
+        onlineContext.setOnlineConfig(onlineConfig);
     }
 
     @SuppressLint("CheckResult")
     public <T> void connect(Observable<T> obs, Observer observer) {
         onlineContext.setContext(context);
         onlineContext.setOnlineConfig(onlineConfig);
-        onlineContext.setUrl(url);
-        TLog.e("执行生命周期监听");
-        obs
-                //测试取消订阅
-//                .repeat()
-                .doOnDispose(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        Log.e(StandardRXOnline.class.getSimpleName(), "The Observable onDispose()");
+
+        DisposableObserver<T> disposableObserver = new DisposableObserver<T>() {
+            @Override
+            protected void onStart() {
+                super.onStart();
+                Log.e(StandardRXOnline.class.getSimpleName(), "The Observable onStart()");
+                OnlineConfig onlineConfig = getOnlineConfig();
+                if (onlineConfig.isShowWait && onlineConfig.waitDialog != null) {
+                    onlineConfig.waitDialog.show();
+                }
+            }
+
+            @Override
+            public void onNext(T t) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                OnlineConfig onlineConfig = getOnlineConfig();
+                if (onlineConfig.isShowError) {
+
+                    if (e instanceof AppException) {
+                        if (onlineConfig.isErrorToast) {
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                //添加泛型原因，.as返回Object导致无法继续走下去.
-                .as(this.<T>transformer())
-                .subscribe(observer);
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                Log.e(StandardRXOnline.class.getSimpleName(), "The Observable onDispose()");
+                OnlineConfig onlineConfig = getOnlineConfig();
+                if (onlineConfig.isShowWait && onlineConfig.waitDialog != null && onlineConfig.waitDialog.isShowing()) {
+                    onlineConfig.waitDialog.dismiss();
+                }
+
+            }
+        };
+
+        if (getLifecycleOwner() == null) {
+            obs.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer);
+        } else {
+            ObservableSubscribeProxy<T> ss = obs
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    //添加泛型原因，.as返回Object导致无法继续走下去.
+                    .as(this.<T>transformer());
+            ss.subscribe(observer);
+            ss.subscribe(disposableObserver);
+        }
 
     }
 
-    //按照默认配置初始化 Retrofit
-    public void initDefRetrofit() {
-        if (retrofit != null) {
-            return;
-        }
-        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
-        okHttpClient.connectTimeout(onlineConfig.time_out, TimeUnit.SECONDS);
-        if (getOnlineConfig().isLog) {
-            okHttpClient.addInterceptor(new LogInterceptor());
-        }
+    public void getUIObserver() {
 
-        /**
-         * 对所有请求添加请求头
-         */
-//        okHttpClient.addInterceptor(new Interceptor() {
-//            @Override
-//            public okhttp3.Response intercept(Chain chain) throws IOException {
-//                Request request = chain.request();
-//                okhttp3.Response originalResponse = chain.proceed(request);
-//                return originalResponse.newBuilder().header("key1", "value1").addHeader("key2", "value2").build();
-//            }
-//        });
-
-
-        if (TextUtils.isEmpty(url)) {
-            url = onlineConfig.url;
-        }
-        retrofit = new Retrofit.Builder()
-                .client(okHttpClient.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(url)
-                .build();
     }
 
     //获取api
     public <H> H getAPI(Class<H> service) {
-        return retrofit.create(service);
+        return this.onlineConfig.retrofit.create(service);
     }
 
     public LifecycleOwner getLifecycleOwner() {
@@ -159,7 +155,9 @@ public class StandardRXOnline {
     }
 
     public void setContext(Context context) {
-        this.setLifecycleOwner((LifecycleOwner) context);
+        if (context instanceof LifecycleOwner) {
+            this.setLifecycleOwner((LifecycleOwner) context);
+        }
         this.context = context;
     }
 
@@ -168,23 +166,4 @@ public class StandardRXOnline {
                 .from(getLifecycleOwner(), (getEvent() != null ? getEvent() : Lifecycle.Event.ON_STOP)));
     }
 
-    // 设置联机 场景  。 activity、fragment、dialog、service 等 目前就写2个
-//    private Activity currentAty;
-//    private Fragment currentFra;
-//
-//    public void setCurrentAty(Activity aty) {
-//        if (aty instanceof LifecycleProvider) {
-//            this.setLifecycleProvider((LifecycleProvider) context);
-//        }
-//        this.setContext(aty);
-//        this.currentAty = aty;
-//    }
-//
-//    public void setCurrentFra(Fragment fra) {
-//        if (fra instanceof LifecycleProvider) {
-//            this.setLifecycleProvider((LifecycleProvider) context);
-//        }
-//        this.setContext(fra.getActivity());
-//        this.currentFra = fra;
-//    }
 }

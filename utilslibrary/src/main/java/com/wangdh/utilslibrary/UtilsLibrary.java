@@ -2,6 +2,8 @@ package com.wangdh.utilslibrary;
 
 import android.content.Context;
 
+import com.wangdh.utilslibrary.dblibrary.DBLibrary;
+import com.wangdh.utilslibrary.netlibrary.NetLibrary;
 import com.wangdh.utilslibrary.utils.SPTools;
 import com.wangdh.utilslibrary.utils.TDevice;
 import com.wangdh.utilslibrary.utils.logger.TLog;
@@ -19,5 +21,7 @@ public class UtilsLibrary {
         SPTools.init(context);
         SPBaseTools.init(context);
         TLog.init(context);
+        DBLibrary.init(context);
+        NetLibrary.init();
     }
 }

@@ -2,6 +2,7 @@ package com.wangdh.utilslibrary.netlibrary.server;
 
 
 import com.wangdh.utilslibrary.exception.AppException;
+import com.wangdh.utilslibrary.netlibrary.clien.OnlineConfig;
 import com.wangdh.utilslibrary.netlibrary.clien.OnlineListener;
 import com.wangdh.utilslibrary.netlibrary.clien.OnlineObserver;
 import com.wangdh.utilslibrary.netlibrary.clien.StandardRXOnline;
@@ -17,6 +18,11 @@ import io.reactivex.Observable;
  *
  */
 public class XH_RXOnline extends StandardRXOnline {
+    @Override
+    public void initOnlineConfig() {
+        super.initOnlineConfig();
+        onlineConfig.url = "http://v.juhe.cn/";
+    }
 
     public <T> void connectFuc(Observable<? extends BaseResponse<T>> obs, OnlineListener<BaseResponse<T>> listener) {
         OnlineObserver<BaseResponse<T>> disposableObserver = new OnlineObserver<BaseResponse<T>>() {
@@ -56,6 +62,7 @@ public class XH_RXOnline extends StandardRXOnline {
                 TLog.e("停止：" + Thread.currentThread().getName());
                 TLog.e("停止");
             }
+
         };
         disposableObserver.setContext(null);
         disposableObserver.setListener(listener);

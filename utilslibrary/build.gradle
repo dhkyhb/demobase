@@ -58,4 +58,14 @@ dependencies {
 
     //数据库 https://github.com/greenrobot/greenDAO
     api 'org.greenrobot:greendao:3.2.2'
+
+
+    // 此处以JCore 2.1.0 版本为例。 腾讯 ui
+    implementation 'com.qmuiteam:qmui:1.4.0'
+
+    //https://www.jianshu.com/p/10b80cafa2b9 二维码相关
+    implementation 'com.google.zxing:core:3.3.0'
+
+    //webview 封装
+//    implementation 'com.just.agentweb:agentweb:4.0.2'
 }

@@ -27,19 +27,17 @@ import static com.wangdh.utilslibrary.netlibrary.server.weather.API_Weather.WEAT
  */
 public class NetTest {
     public static void conn_xiao_hua(Context context) {
-        OnlineConfig.getDefConfig().url="http://v.juhe.cn/";
         XH_RXOnline online = new XH_RXOnline();
         online.setContext(context);
-        online.setUrl("http://v.juhe.cn/");
-        online.setCloseEvent(Lifecycle.Event.ON_DESTROY);
         API_Xiaohua api = online.getAPI(API_Xiaohua.class);
         online.connectFuc(api.xhList(), new OnlineListener<BaseResponse<XiaohuaBody>>() {
             @Override
             public void succeed(BaseResponse<XiaohuaBody> xiaohuaBodyBaseResponse, OnlineContext context) {
                 int size = xiaohuaBodyBaseResponse.getResult().getList().size();
                 TLog.e("收到的笑话集合大小为：" + size);
-                for (XiaoHuaContent body : xiaohuaBodyBaseResponse.getResult().getList())
-                    TLog.e("收到的笑话集合为：" + body.getContent());
+                for (XiaoHuaContent body : xiaohuaBodyBaseResponse.getResult().getList()) {
+                }
+//                    TLog.e("收到的笑话集合为：" + body.getContent());
             }
 
             @Override
@@ -52,7 +50,6 @@ public class NetTest {
     public static void conn_weather(Context context) {
         XH_RXOnline online = new XH_RXOnline();
         online.setContext(context);
-        online.setUrl(WEATHER_URL);
         online.setCloseEvent(Lifecycle.Event.ON_DESTROY);
         API_Weather api = online.getAPI(API_Weather.class);
         online.connectFuc(api.requestWeather("上海", "0fbb2ebffb60b3952bdf49fe72ce5838"), new OnlineListener<BaseResponse<ResultBean>>() {

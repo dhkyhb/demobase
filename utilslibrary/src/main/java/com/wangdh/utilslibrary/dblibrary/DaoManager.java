@@ -7,6 +7,8 @@ import android.util.Log;
 import com.wangdh.utilslibrary.dblibrary.build.DaoMaster;
 import com.wangdh.utilslibrary.dblibrary.build.DaoSession;
 
+import org.greenrobot.greendao.database.Database;
+
 
 /**
  * 剪切到主程序去
@@ -17,7 +19,10 @@ import com.wangdh.utilslibrary.dblibrary.build.DaoSession;
 public class DaoManager {
     private static final String TAG = DaoManager.class.getSimpleName();
 
-    private static final String dbName = "libDB";
+    private static Context context = null;
+
+    private static String dbName = "libDB";
+
     private static DaoMaster.DevOpenHelper openHelper;
 
     private static DaoSession daoSession = null;
@@ -31,15 +36,20 @@ public class DaoManager {
             return daoSession;
         }
 
-
-        SQLiteDatabase db = getWritableDatabase();
+        Database db = getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         return daoSession;
     }
 
+    //切换数据库
+    public static void switchDB(String name) {
+        openHelper = new DaoMaster.DevOpenHelper(context, name, null);
+        Database db = openHelper.getWritableDb();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+    }
 
-    private static Context context = null;
 
     public static void init(Context contextz) {
         context = contextz;
@@ -59,11 +69,12 @@ public class DaoManager {
     /**
      * 获取可写数据库
      */
-    private static SQLiteDatabase getWritableDatabase() {
+    private static Database getWritableDatabase() {
         if (openHelper == null) {
             openHelper = new DaoMaster.DevOpenHelper(context, dbName, null);
         }
-        SQLiteDatabase db = openHelper.getWritableDatabase();
+//        SQLiteDatabase db = openHelper.getWritableDatabase();
+        Database db = openHelper.getWritableDb();
         return db;
     }
 

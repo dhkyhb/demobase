@@ -7,7 +7,14 @@ import android.view.View;
 
 import com.wangdh.demolist.R;
 import com.wangdh.demolist.service.PService;
+import com.wangdh.demolist.ui.aty.RootActivity;
+import com.wangdh.utilslibrary.dblibrary.DBTest;
+import com.wangdh.utilslibrary.netlibrary.NetTest;
 import com.wangdh.utilslibrary.rx.RXTest;
+import com.wangdh.utilslibrary.utils.file.FileToolTest;
+import com.wangdh.utilslibrary.utils.logger.TLog;
+
+import java.util.UUID;
 
 
 /**
@@ -19,11 +26,17 @@ public class PXActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_px);
-//        RXTest.tt();
+        NetTest.conn_xiao_hua(this);
+        startActivity(new Intent(this, RootActivity.class));
+        String s = UUID.randomUUID().toString();
+        TLog.e(s);
     }
 
     public void click(View view) {
-        Intent intent = new Intent(this, PService.class);
-        startService(intent);
+
+    }
+
+    public void click2(View view) {
+        FileToolTest.test(this);
     }
 }

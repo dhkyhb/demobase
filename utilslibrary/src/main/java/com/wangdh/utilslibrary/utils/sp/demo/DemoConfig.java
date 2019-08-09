@@ -14,4 +14,7 @@ public class DemoConfig {
 
     @SP(value = "海波", type = String.class)
     public static final String demo = TAG + "demo";
+
+    @SP(value = "1", type = Integer.class)
+    public static final String init = TAG + "init";
 }

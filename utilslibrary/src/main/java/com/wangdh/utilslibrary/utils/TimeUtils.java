@@ -1,5 +1,7 @@
 package com.wangdh.utilslibrary.utils;
 
+import android.annotation.SuppressLint;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -96,7 +98,13 @@ public class TimeUtils {
         return time1;
     }
 
-    public static String getFormat2ByCurrent(){
+    public static String getCurrentTimeFor2() {
         return getCurrentTime(format_2);
+    }
+
+    public static String getNowStrTime() {
+        long time = System.currentTimeMillis();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(new Date(time));
     }
 }

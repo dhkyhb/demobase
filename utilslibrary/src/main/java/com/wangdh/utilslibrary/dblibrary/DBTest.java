@@ -1,7 +1,8 @@
 package com.wangdh.utilslibrary.dblibrary;
 
-import com.wangdh.utilslibrary.dblibrary.db.DaoUser;
-import com.wangdh.utilslibrary.dblibrary.entity.User;
+import com.wangdh.utilslibrary.dblibrary.db.SQL_LogText;
+import com.wangdh.utilslibrary.dblibrary.entity.LogText;
+import com.wangdh.utilslibrary.utils.TimeUtils;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
 import java.util.List;
@@ -13,14 +14,14 @@ import java.util.List;
  */
 public class DBTest {
     public static void insert() {
-        User user = new User();
-        user.name = "Andrew Grosner";
-        user.age = 27;
-        DaoManager.getSession().getUserDao().insert(user);
-
-        List<User> users = DaoUser.getInstance().select();
-        for (User user1 : users) {
-            TLog.e(user1.toString());
+        LogText logText = new LogText();
+        logText.setName("运行次数");
+        logText.setTime(TimeUtils.getCurrentTimeFor2());
+        logText.setText("点击了 点击了。");
+        SQL_LogText.getInstance().insert(logText);
+        List<LogText> select = SQL_LogText.getInstance().select();
+        for (LogText text : select) {
+            TLog.e(text.toString());
         }
     }
 

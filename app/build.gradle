@@ -5,6 +5,7 @@ apply plugin: 'org.greenrobot.greendao'
 static def releaseTime() {
     return new Date().format("yyyy_MM_dd_HH_mm_ss", TimeZone.getTimeZone("UTC"))
 }
+
 greendao {
 //    schemaVersion 2
     daoPackage 'com.wangdh.demolist.greedao'
@@ -69,6 +70,5 @@ dependencies {
 //    implementation project(':dblibrary')
 //    implementation project(':netlibrary')
     implementation project(':utilslibrary')
-    //https://www.jianshu.com/p/10b80cafa2b9 二维码相关
-    implementation 'com.google.zxing:core:3.3.0'
+
 }
