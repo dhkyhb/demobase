@@ -2,7 +2,6 @@ package com.wangdh.utilslibrary.netlibrary.server;
 
 
 import com.wangdh.utilslibrary.exception.AppException;
-import com.wangdh.utilslibrary.netlibrary.clien.OnlineConfig;
 import com.wangdh.utilslibrary.netlibrary.clien.OnlineListener;
 import com.wangdh.utilslibrary.netlibrary.clien.OnlineObserver;
 import com.wangdh.utilslibrary.netlibrary.clien.StandardRXOnline;
@@ -13,19 +12,11 @@ import io.reactivex.Observable;
 /**
  * @author wangdh
  * @time 2019/5/15 16:13
- * @describe
- * 1.本类 主要是对 返回数据进行校验后传递给回调函数、
- *
+ * @describe 1.本类 主要是对 返回数据进行校验后传递给回调函数、
  */
 public class XH_RXOnline extends StandardRXOnline {
-    @Override
-    public void initOnlineConfig() {
-        super.initOnlineConfig();
-        onlineConfig.url = "http://v.juhe.cn/";
-    }
-
-    public <T> void connectFuc(Observable<? extends BaseResponse<T>> obs, OnlineListener<BaseResponse<T>> listener) {
-        OnlineObserver<BaseResponse<T>> disposableObserver = new OnlineObserver<BaseResponse<T>>() {
+    public <T> void connectFuc(Observable<? extends HttpResponse<T>> obs, OnlineListener<HttpResponse<T>> listener) {
+        OnlineObserver<HttpResponse<T>> disposableObserver = new OnlineObserver<HttpResponse<T>>() {
             @Override
             protected void onStart() {
                 super.onStart();
@@ -33,8 +24,7 @@ public class XH_RXOnline extends StandardRXOnline {
             }
 
             @Override
-            public void onNext(BaseResponse<T> bean) {
-//                TLog.e("返回：" + bean.toString());
+            public void onNext(HttpResponse<T> bean) {
                 TLog.e("返回：" + Thread.currentThread().getName());
                 try {
                     if (this.listener != null) {
@@ -60,7 +50,6 @@ public class XH_RXOnline extends StandardRXOnline {
             @Override
             public void onComplete() {
                 TLog.e("停止：" + Thread.currentThread().getName());
-                TLog.e("停止");
             }
 
         };
@@ -76,7 +65,7 @@ public class XH_RXOnline extends StandardRXOnline {
      * @param bean
      * @throws AppException
      */
-    public void check(BaseResponse bean) throws AppException {
+    public void check(HttpResponse bean) throws AppException {
         if (bean == null) {
             throw new AppException("1", "数据不完整");
         }

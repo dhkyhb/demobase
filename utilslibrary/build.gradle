@@ -60,8 +60,8 @@ dependencies {
     api 'org.greenrobot:greendao:3.2.2'
 
 
-    // 此处以JCore 2.1.0 版本为例。 腾讯 ui
-    implementation 'com.qmuiteam:qmui:1.4.0'
+    // 。 腾讯 ui 如果本包在模块包里面  app 包的 AppTheme定要 继承 parent="QMUI.Compat"
+    api 'com.qmuiteam:qmui:1.4.0'
 
     //https://www.jianshu.com/p/10b80cafa2b9 二维码相关
     implementation 'com.google.zxing:core:3.3.0'

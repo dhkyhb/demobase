@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -37,6 +37,10 @@ public class ExampleUnitTest {
 
     @Test
     public void test_2() {
-
+        String s = "[isRun]: USER      PID   PPID  VSIZE  RSS   WCHAN            PC  NAME\n" +
+                "    u0_a11    27536 305   1854284 169136 sys_epoll_ 00000000 S com.sand.airdroid\n" +
+                "    u0_a11    27705 305   1600892 41308 sys_epoll_ 00000000 S com.sand.airdroid:push";
+        boolean w = s.contains("com.sand.airdroid");
+        System.out.println(w);
     }
 }

@@ -20,7 +20,7 @@ public class AppContext extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppCrashHandler.getInstance().init(this);
+//        AppCrashHandler.getInstance().init(this);
 //        String s = AppContext.getPmsg() + "/apk/ad.apk";
 //        InstallAPK.install(s);
         TLog.e("AppContext");

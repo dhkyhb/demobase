@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.uber.autodispose.AutoDisposeConverter;
@@ -43,37 +42,44 @@ public class StandardRXOnline {
         onlineConfig = OnlineConfig.getDefConfig();
     }
 
-    public OnlineConfig getOnlineConfig() {
+    public void initOnlineContext() {
+        if (onlineContext == null) {
+            onlineContext = new OnlineContext();
+        }
+    }
+
+    public OnlineConfig getConfig() {
+        if (onlineConfig == null) {
+            initOnlineConfig();
+        }
         return onlineConfig;
     }
 
-    public StandardRXOnline() {
-        init();
-    }
-
-    private void init() {
-        initOnlineConfig();
-        onlineConfig = getOnlineConfig();
+    /**
+     * 当从外部设置 config 的时候 一定要重新设置API 被观察者
+     *
+     * @param config
+     */
+    public void setOnlineConfig(OnlineConfig config) {
+        onlineConfig = config;
         onlineConfig.build();
-
-        onlineContext = new OnlineContext();
-        onlineContext.setOnlineConfig(onlineConfig);
     }
 
     @SuppressLint("CheckResult")
     public <T> void connect(Observable<T> obs, Observer observer) {
+        initOnlineContext();
         onlineContext.setContext(context);
         onlineContext.setOnlineConfig(onlineConfig);
 
+        OnlineConfig onlineConfig = getConfig();
+        if (onlineConfig.isShowWait && onlineConfig.waitDialog != null) {
+            onlineConfig.waitDialog.show();
+        }
         DisposableObserver<T> disposableObserver = new DisposableObserver<T>() {
             @Override
             protected void onStart() {
                 super.onStart();
-                Log.e(StandardRXOnline.class.getSimpleName(), "The Observable onStart()");
-                OnlineConfig onlineConfig = getOnlineConfig();
-                if (onlineConfig.isShowWait && onlineConfig.waitDialog != null) {
-                    onlineConfig.waitDialog.show();
-                }
+
             }
 
             @Override
@@ -83,7 +89,7 @@ public class StandardRXOnline {
 
             @Override
             public void onError(Throwable e) {
-                OnlineConfig onlineConfig = getOnlineConfig();
+                OnlineConfig onlineConfig = getConfig();
                 if (onlineConfig.isShowError) {
 
                     if (e instanceof AppException) {
@@ -96,8 +102,7 @@ public class StandardRXOnline {
 
             @Override
             public void onComplete() {
-                Log.e(StandardRXOnline.class.getSimpleName(), "The Observable onDispose()");
-                OnlineConfig onlineConfig = getOnlineConfig();
+                OnlineConfig onlineConfig = getConfig();
                 if (onlineConfig.isShowWait && onlineConfig.waitDialog != null && onlineConfig.waitDialog.isShowing()) {
                     onlineConfig.waitDialog.dismiss();
                 }
@@ -106,9 +111,10 @@ public class StandardRXOnline {
         };
 
         if (getLifecycleOwner() == null) {
-            obs.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(observer);
+            Observable<T> tObservable = obs.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+            tObservable.subscribe(observer);
+            tObservable.subscribe(disposableObserver);
         } else {
             ObservableSubscribeProxy<T> ss = obs
                     .subscribeOn(Schedulers.io())
@@ -121,12 +127,12 @@ public class StandardRXOnline {
 
     }
 
-    public void getUIObserver() {
-
-    }
-
     //获取api
     public <H> H getAPI(Class<H> service) {
+        if (onlineConfig == null) {
+            initOnlineConfig();
+            onlineConfig.build();
+        }
         return this.onlineConfig.retrofit.create(service);
     }
 
@@ -155,6 +161,9 @@ public class StandardRXOnline {
     }
 
     public void setContext(Context context) {
+        if (context == null) {
+            return;
+        }
         if (context instanceof LifecycleOwner) {
             this.setLifecycleOwner((LifecycleOwner) context);
         }

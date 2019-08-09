@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.wangdh.demolist.R;
 import com.wangdh.demolist.service.PService;
+import com.wangdh.demolist.ui.HttpActivity;
 import com.wangdh.demolist.ui.aty.RootActivity;
 import com.wangdh.utilslibrary.dblibrary.DBTest;
 import com.wangdh.utilslibrary.netlibrary.NetTest;
@@ -26,17 +27,16 @@ public class PXActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_px);
-        NetTest.conn_xiao_hua(this);
-        startActivity(new Intent(this, RootActivity.class));
         String s = UUID.randomUUID().toString();
         TLog.e(s);
     }
 
     public void click(View view) {
-
+        startActivity(new Intent(this, RootActivity.class));
     }
 
     public void click2(View view) {
-        FileToolTest.test(this);
+        startActivity(new Intent(this, HttpActivity.class));
+//        FileToolTest.test(this);
     }
 }

@@ -9,7 +9,7 @@ import com.parkingwang.okhttp3.LogInterceptor.LogInterceptor;
 import com.wangdh.utilslibrary.exception.AppException;
 import com.wangdh.utilslibrary.netlibrary.clien.OnlineContext;
 import com.wangdh.utilslibrary.netlibrary.clien.OnlineListener;
-import com.wangdh.utilslibrary.netlibrary.server.BaseResponse;
+import com.wangdh.utilslibrary.netlibrary.server.HttpResponse;
 import com.wangdh.utilslibrary.netlibrary.server.XH_RXOnline;
 import com.wangdh.utilslibrary.netlibrary.server.xiaohua.API_Xiaohua;
 import com.wangdh.utilslibrary.netlibrary.server.xiaohua.XiaohuaBody;
@@ -95,11 +95,11 @@ public class NetRXTest {
         API_Xiaohua api = retrofit.create(API_Xiaohua.class);
         //调用方法得到一个Call
         //call; //= api.xhList("desc",1,3,"4bccc3f1ee021fd12621dfffb8ddcfcf","1418816972");
-        Call<BaseResponse> call = api.xhList2();
+        Call<HttpResponse> call = api.xhList2();
         //进行网络请求
-        call.enqueue(new Callback<BaseResponse>() {
+        call.enqueue(new Callback<HttpResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            public void onResponse(Call<HttpResponse> call, Response<HttpResponse> response) {
                 int code = response.code();
                 TLog.e("code:" + code);
                 TLog.e("message:" + response.message());
@@ -109,7 +109,7 @@ public class NetRXTest {
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
+            public void onFailure(Call<HttpResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -131,9 +131,9 @@ public class NetRXTest {
         API_Xiaohua api = retrofit.create(API_Xiaohua.class);
 
 
-        DisposableObserver<BaseResponse> disposableObserver = new DisposableObserver<BaseResponse>() {
+        DisposableObserver<HttpResponse> disposableObserver = new DisposableObserver<HttpResponse>() {
             @Override
-            public void onNext(BaseResponse movieSubject) {
+            public void onNext(HttpResponse movieSubject) {
                 TLog.e(movieSubject.toString());
 //                List<MovieSubject.SubjectsBean> subjects = movieSubject.getSubjects();
 //                for (MovieSubject.SubjectsBean subject : subjects) {
@@ -252,7 +252,7 @@ public class NetRXTest {
         online.connectFuc(api.xhList(), new OnlineListener() {
             @Override
             public void succeed(Object o, OnlineContext context) {
-                BaseResponse<XiaohuaBody> xiaohuaBodyXiaohuaRespose = (BaseResponse<XiaohuaBody>) o;
+                HttpResponse<XiaohuaBody> xiaohuaBodyXiaohuaRespose = (HttpResponse<XiaohuaBody>) o;
                 int size = xiaohuaBodyXiaohuaRespose.getResult().getList().size();
                 TLog.e("收到的笑话集合大小为：" + size);
             }
@@ -305,9 +305,9 @@ public class NetRXTest {
         //获取接口实例
         API_Xiaohua api = retrofit.create(API_Xiaohua.class);
 
-        DisposableObserver<BaseResponse> disposableObserver = new DisposableObserver<BaseResponse>() {
+        DisposableObserver<HttpResponse> disposableObserver = new DisposableObserver<HttpResponse>() {
             @Override
-            public void onNext(BaseResponse bean) {
+            public void onNext(HttpResponse bean) {
                 TLog.e(bean.toString());
 //                List<MovieSubject.SubjectsBean> subjects = movieSubject.getSubjects();
 //                for (MovieSubject.SubjectsBean subject : subjects) {

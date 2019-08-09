@@ -1,6 +1,6 @@
 package com.wangdh.utilslibrary.netlibrary.server.xiaohua;
 
-import com.wangdh.utilslibrary.netlibrary.server.BaseResponse;
+import com.wangdh.utilslibrary.netlibrary.server.HttpResponse;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -18,15 +18,15 @@ public interface API_Xiaohua {
     //请求参数：sort=desc&page=1&pagesize=3&time=1418816972&key=4bccc3f1ee021fd12621dfffb8ddcfcf
     //请求方式：GET
     @GET("joke/content/list.php/")
-    Call<BaseResponse> xhList(@Query("sort") String sort, @Query("page") int page, @Query("pagesize") int pagesize, @Query("key") String key, @Query("time") String time);
+    Call<HttpResponse> xhList(@Query("sort") String sort, @Query("page") int page, @Query("pagesize") int pagesize, @Query("key") String key, @Query("time") String time);
 
     //@Headers("apikey:b86c2269fe6588bbe3b41924bb2f2da2")
     @GET("joke/content/list.php?sort=asc&page=1&pagesize=5&time=1418816972&key=4bccc3f1ee021fd12621dfffb8ddcfcf")
-    Observable<BaseResponse<XiaohuaBody>> xhList();
+    Observable<HttpResponse<XiaohuaBody>> xhList();
 
 
     @GET("joke/content/list.php?sort=asc&page=1&pagesize=5&time=1418816972&key=4bccc3f1ee021fd12621dfffb8ddcfcf")
-    Call<BaseResponse>  xhList2();
+    Call<HttpResponse> xhList2();
 
     //http://v.juhe.cn/joke/content/list.php?sort=asc&page=1&pagesize=5&time=1418816972&key=4bccc3f1ee021fd12621dfffb8ddcfcf
 

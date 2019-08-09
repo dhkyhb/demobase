@@ -50,28 +50,28 @@ public class AppCrashHandler implements Thread.UncaughtExceptionHandler {
         }
         ex.printStackTrace();
 //        Intent intent = new Intent(mContext, PService.class);
-//        intent.putExtra("key",ex.getMessage());
+//        intent.putExtra("key","error");
 //        mContext.startService(intent);
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    new Shell().writeLog();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Looper.prepare();
-                Toast.makeText(mContext, "Demo出现未知异常,即将退出.", Toast.LENGTH_LONG).show();
-                Looper.loop();
-
-            }
-        }.start();
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+//                    new Shell().writeLog();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                Looper.prepare();
+//                Toast.makeText(mContext, "Demo出现未知异常,即将退出.", Toast.LENGTH_LONG).show();
+//                Looper.loop();
+//
+//            }
+//        }.start();
+//        //加入延迟 阻止进程马上结束，提供记录日志的线程时间
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         return true;
     }

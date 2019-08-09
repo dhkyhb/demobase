@@ -1,6 +1,6 @@
 package com.wangdh.utilslibrary.netlibrary.server;
 
-public class BaseResponse<T> {
+public class HttpResponse<T> {
 
     protected String reason;
     protected int error_code;
@@ -32,7 +32,7 @@ public class BaseResponse<T> {
 
     @Override
     public String toString() {
-        return "BaseResponse{" +
+        return "HttpResponse{" +
                 "reason='" + reason + '\'' +
                 ", error_code=" + error_code +
                 ", result=" + result +

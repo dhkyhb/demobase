@@ -51,4 +51,15 @@ public class Shell {
         return log;
     }
 
+    public boolean isRun(String pName) {
+        StringBuffer cmd = send("ps " + pName);
+        TLog.e(cmd.toString());
+        if (cmd != null) {
+            boolean contains = cmd.toString().contains(pName);
+            if (contains) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

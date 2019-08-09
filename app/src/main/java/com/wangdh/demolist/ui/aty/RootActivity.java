@@ -34,7 +34,7 @@ public class RootActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 int init = SPManage.getInt(DemoConfig.init);
-                int i = 2;
+                int i = 5;
                 if (init <= i) {
                     SPManage.set(DemoConfig.init, ++i);
                     String[] strings = new String[1];

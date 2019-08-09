@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class OnlineConfig {
     //是否显示框架内部日志
     public boolean isLog = true;
-    public String url = API_Xiaohua.url;
+    public String url = "";
     public int time_out = 10000;
 
     public boolean isShowWait = false;
