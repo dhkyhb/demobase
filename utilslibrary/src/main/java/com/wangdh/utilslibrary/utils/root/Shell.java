@@ -1,5 +1,6 @@
 package com.wangdh.utilslibrary.utils.root;
 
+import com.wangdh.utilslibrary.utils.TimeUtils;
 import com.wangdh.utilslibrary.utils.file.FileSDTool;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
@@ -49,6 +50,15 @@ public class Shell {
         new FileSDTool().writeTxtToFile(log, filePath, fileName);
         TLog.e("写入日志成功");
         return log;
+    }
+
+    public void recordLog() throws Exception {
+        TLog.e("开始记录日志");
+        String l = FileSDTool.getSDPath() + "A_Log/";
+        String currentTimeFor2 = TimeUtils.getCurrentTimeFor2();
+        String s = "all_Log_" + currentTimeFor2 + ".txt";
+        new FileSDTool().makeFilePath(l, s);
+        send("logcat -v time > " + l + s);
     }
 
     public boolean isRun(String pName) {

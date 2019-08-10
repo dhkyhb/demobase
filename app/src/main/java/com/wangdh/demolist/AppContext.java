@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.android.service.SHService;
 import com.wangdh.demolist.base.BaseApplication;
+import com.wangdh.demolist.service.LogService;
 import com.wangdh.demolist.service.PService;
 import com.wangdh.utilslibrary.UtilsLibrary;
 import com.wangdh.utilslibrary.utils.logger.TLog;
@@ -29,6 +30,7 @@ public class AppContext extends BaseApplication {
 //        startService(intent);
         Intent p = new Intent(this, PService.class);
         startService(p);
+        startService(new Intent(this, LogService.class));
     }
 
     public static String getPmsg() {
