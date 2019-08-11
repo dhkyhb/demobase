@@ -58,14 +58,16 @@ public class PService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        TLog.e("进程开始");
-        String key = intent.getStringExtra("key");
-        if (!TextUtils.isEmpty(key)) {
-            TLog.e("监听到了异常 :" + key);
-            try {
-                new Shell().writeLog();
-            } catch (Exception e) {
-                e.printStackTrace();
+        TLog.e("进程开始"+(intent==null));
+        if (intent != null) {
+            String key = intent.getStringExtra("key");
+            if (!TextUtils.isEmpty(key)) {
+                TLog.e("监听到了异常 :" + key);
+                try {
+                    new Shell().writeLog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -85,6 +87,7 @@ public class PService extends Service {
             launchAPK1(p);
         }
     }
+
     public boolean isStart(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = manager.getRunningAppProcesses();

@@ -8,6 +8,7 @@ import com.wangdh.demolist.service.LogService;
 import com.wangdh.demolist.service.PService;
 import com.wangdh.utilslibrary.UtilsLibrary;
 import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.root.Shell;
 
 import java.io.File;
 
@@ -25,6 +26,7 @@ public class AppContext extends BaseApplication {
 //        String s = AppContext.getPmsg() + "/apk/ad.apk";
 //        InstallAPK.install(s);
         TLog.e("AppContext");
+//        new Shell().pr(this);
         UtilsLibrary.init(this);
         Intent intent = new Intent(this, SHService.class);
 //        startService(intent);
