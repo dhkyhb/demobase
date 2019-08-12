@@ -22,6 +22,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+/**
+ * 服务被系统销毁后，会自动启动，这个时候intent 是null
+ */
 public class PService extends Service {
     public PService() {
     }
@@ -85,6 +88,7 @@ public class PService extends Service {
             launchAPK1(p);
         }
     }
+
     public boolean isStart(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = manager.getRunningAppProcesses();
