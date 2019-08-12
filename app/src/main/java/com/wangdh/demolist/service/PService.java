@@ -58,7 +58,7 @@ public class PService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        TLog.e("进程开始"+(intent==null));
+        TLog.e("进程开始" + (intent == null));
         if (intent != null) {
             String key = intent.getStringExtra("key");
             if (!TextUtils.isEmpty(key)) {

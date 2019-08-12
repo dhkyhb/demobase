@@ -2,6 +2,7 @@ package com.wangdh.utilslibrary.utils.root;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.wangdh.utilslibrary.utils.TimeUtils;
 import com.wangdh.utilslibrary.utils.file.FileSDTool;
@@ -10,6 +11,7 @@ import com.wangdh.utilslibrary.utils.logger.TLog;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,20 +74,62 @@ public class Shell {
     }
 
 
-    // 当
+    // 持续记录日志
     public void recordLog() throws Exception {
+        // 在5.1系统 之前， 进程不会随着 app 进程死亡而死亡， 所以再次启动的时候必须手动杀掉 cmd进程
+        killAll();
         TLog.e("开始记录日志");
         String l = FileSDTool.getSDPath() + "A_Log/";
         String currentTimeFor2 = TimeUtils.getCurrentTimeFor2();
-//        String s = "all_Log_" + currentTimeFor2 + ".txt";
-        // 当 api 是 6.0 以下时， 子进程不会随着主进程死亡， 所以
-        String s = "all_Log.txt";
+        String s = "all_Log_" + currentTimeFor2 + ".txt";
+//        String s = "all_Log.txt";
         new FileSDTool().makeFilePath(l, s);
         String cmd = "logcat -v time -f " + l + s;
         TLog.e("shell:" + cmd);
-        send(cmd);
+        StringBuffer send = send(cmd);
+        TLog.e("shell return:" + send.toString());
     }
 
+    /**
+     * 删除所有 cmd 进程
+     */
+    public void killAll() {
+        StringBuffer ps = send("ps");
+        List<String[]> datas = StringToList(ps.toString(), 9);
+        int appid = android.os.Process.myPid();
+        String appUName = "";
+        String appPPid = "";
+
+        TLog.e("本程序进程id：" + appid);
+        for (String[] data : datas) {
+            try {
+                boolean b = Integer.valueOf(data[1]) == appid;
+                if (b) {
+                    appUName = data[0];
+                    appPPid = data[2];
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        for (String[] data : datas) {
+            try {
+//                        TLog.e("进程:" + data[0] + " " + data[1] + " " + data[2] + " " + data[3] + " " + data[4] + " " + data[5] + " " + data[6] + " " + data[7] + " " + data[8]);
+                boolean b = Integer.valueOf(data[2]) == appid;
+                if (b) {
+                    android.os.Process.killProcess(Integer.valueOf(data[1]));
+                    TLog.e("结束进程:" + data[0] + " " + data[1] + " " + data[2] + " " + data[3] + " " + data[4] + " " + data[5] + " " + data[6] + " " + data[7] + " " + data[8]);
+                    continue;
+                }
+                if (!TextUtils.isEmpty(appUName) && appUName.equals(data[0]) && !appPPid.equals(data[2])) {
+                    android.os.Process.killProcess(Integer.valueOf(data[1]));
+                    TLog.e("结束进程:" + data[0] + " " + data[1] + " " + data[2] + " " + data[3] + " " + data[4] + " " + data[5] + " " + data[6] + " " + data[7] + " " + data[8]);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public boolean isRun(String pName) {
         StringBuffer cmd = send("ps " + pName);
         TLog.e(cmd.toString());
@@ -97,6 +141,7 @@ public class Shell {
         }
         return false;
     }
+
     //只能杀死 特定的进程， 比如 主进程 和 service 进程。 cmd创建的进程 无法看到
     public void killAll(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
@@ -105,11 +150,61 @@ public class Shell {
             String s = "";
             int pid = runningAppProcess.pid;
             String processName = runningAppProcess.processName;
-            s = s + processName + " " + pid ;
+            s = s + processName + " " + pid;
             if (android.os.Process.myPid() != pid) {
                 android.os.Process.killProcess(pid);
                 TLog.e("结束进程：" + s);
             }
         }
+    }
+
+    public void appProcess(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = manager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
+            int pid = runningAppProcess.pid;
+            String processName = runningAppProcess.processName;
+            if (android.os.Process.myPid() == pid) {
+//                runningAppProcess.
+                return;
+            }
+        }
+    }
+
+    /**
+     * \
+     *
+     * @param msg
+     * @param line 列 数 ，从1开始计数； 不等于这个列数的 就不会录入
+     * @return
+     */
+    public List<String[]> StringToList(String msg, int line) {
+        String[] itme = msg.split("\n");
+        List<String[]> all = new ArrayList<>();
+        for (String it : itme) {
+
+            String[] s = it.split(" ");
+            List<String> zz = new ArrayList<>();
+            for (int i = 0; i < s.length; i++) {
+                if (!TextUtils.isEmpty(s[i])) {
+                    if (zz.size() == line) {
+                        String last = zz.get(line - 1) + "" + s[i];
+                        zz.set(line - 1, last);
+                    } else {
+                        zz.add(s[i]);
+                    }
+                }
+            }
+
+            if (zz.size() == line) {
+//                String ll = "";
+//                for (String zz1 : zz) {
+//                    ll = ll + "-" + zz1;
+//                }
+//                TLog.e(zz.size() + ":" + ll);
+                all.add(zz.toArray(new String[zz.size()]));
+            }
+        }
+        return all;
     }
 }

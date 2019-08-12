@@ -3,8 +3,13 @@ package com.wangdh.demolist.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Process;
+import android.text.TextUtils;
 
+import com.wangdh.utilslibrary.utils.logger.TLog;
 import com.wangdh.utilslibrary.utils.root.Shell;
+
+import java.util.List;
 
 public class LogService extends Service {
     public LogService() {
@@ -13,7 +18,7 @@ public class LogService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -31,5 +36,13 @@ public class LogService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public class MyProgress {
+        public int pid;
+        public int ppid;
+        public String pname;
+        public String uname;
+
     }
 }
