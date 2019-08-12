@@ -41,6 +41,7 @@ public class PService extends Service {
                     @Override
                     public void accept(@NonNull Long aLong) throws Exception {
                         Log.e("心跳", "" + aLong);
+//                        startyc();
                         try {
                             isStart(PService.this);
                         } catch (Exception e) {
