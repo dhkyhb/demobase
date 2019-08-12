@@ -28,6 +28,16 @@
             android:layout_height="wrap_content"
             android:text="发送到服务将日志写入sd卡"
             android:onClick="sendservice" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="查看进程"
+            android:onClick="pr" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="杀死进程"
+            android:onClick="kill" />
 
         <ScrollView
             android:layout_width="match_parent"

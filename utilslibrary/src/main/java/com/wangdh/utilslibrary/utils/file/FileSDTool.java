@@ -26,6 +26,11 @@ public class FileSDTool {
 //                + File.separator + "download" + File.separator;
         return path;
     }
+    public static String getSDAbsolutePath() {
+        String path = Environment
+                .getExternalStorageDirectory().getAbsolutePath();
+        return path;
+    }
 
     /**
      * 将文件写入本地

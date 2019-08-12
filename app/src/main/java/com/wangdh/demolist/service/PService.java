@@ -22,9 +22,6 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-/**
- * 服务被系统销毁后，会自动启动，这个时候intent 是null
- */
 public class PService extends Service {
     public PService() {
     }
@@ -41,12 +38,11 @@ public class PService extends Service {
                     @Override
                     public void accept(@NonNull Long aLong) throws Exception {
                         Log.e("心跳", "" + aLong);
-//                        startyc();
-                        try {
-                            isStart(PService.this);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            isStart(PService.this);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
 
                     }
                 });
@@ -62,14 +58,16 @@ public class PService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        TLog.e("进程开始");
-        String key = intent.getStringExtra("key");
-        if (!TextUtils.isEmpty(key)) {
-            TLog.e("监听到了异常 :" + key);
-            try {
-                new Shell().writeLog();
-            } catch (Exception e) {
-                e.printStackTrace();
+        TLog.e("进程开始"+(intent==null));
+        if (intent != null) {
+            String key = intent.getStringExtra("key");
+            if (!TextUtils.isEmpty(key)) {
+                TLog.e("监听到了异常 :" + key);
+                try {
+                    new Shell().writeLog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return super.onStartCommand(intent, flags, startId);

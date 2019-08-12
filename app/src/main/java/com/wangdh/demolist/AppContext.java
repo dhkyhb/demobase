@@ -4,9 +4,11 @@ import android.content.Intent;
 
 import com.android.service.SHService;
 import com.wangdh.demolist.base.BaseApplication;
+import com.wangdh.demolist.service.LogService;
 import com.wangdh.demolist.service.PService;
 import com.wangdh.utilslibrary.UtilsLibrary;
 import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.root.Shell;
 
 import java.io.File;
 
@@ -24,11 +26,13 @@ public class AppContext extends BaseApplication {
 //        String s = AppContext.getPmsg() + "/apk/ad.apk";
 //        InstallAPK.install(s);
         TLog.e("AppContext");
+//        new Shell().pr(this);
         UtilsLibrary.init(this);
         Intent intent = new Intent(this, SHService.class);
 //        startService(intent);
         Intent p = new Intent(this, PService.class);
         startService(p);
+        startService(new Intent(this, LogService.class));
     }
 
     public static String getPmsg() {
