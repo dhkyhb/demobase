@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.wangdh.demolist.ui.fragment.TextFragment;
-import com.wangdh.demolist.ui.px.PXActivity;
+import com.wangdh.demolist.ui.PXActivity;
 import com.wangdh.utilslibrary.utils.BCDHelper;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 

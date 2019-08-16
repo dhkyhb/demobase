@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.wangdh.demolist.R;
-import com.wangdh.demolist.service.PService;
+import com.wangdh.demolist.service.StartAppService;
 import com.wangdh.utilslibrary.utils.TimeUtils;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 import com.wangdh.utilslibrary.utils.root.Shell;
@@ -66,7 +66,7 @@ public class RootActivity extends AppCompatActivity {
     }
 
     public void sendservice(View view) {
-        Intent intent = new Intent(this, PService.class);
+        Intent intent = new Intent(this, StartAppService.class);
         intent.putExtra("key", "wqert679[");
         startService(intent);
     }

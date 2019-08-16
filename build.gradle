@@ -19,6 +19,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+//        串口包
+        maven { url 'https://jitpack.io' }
     }
 }
 

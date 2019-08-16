@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.SerialPortTestActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="spt1"
+            android:text="开启连接串口服务" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="spt2"
+            android:text="绑定串口服务" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="spt3"
+            android:text="解绑串口服务" />
+
+        <Button
+            android:id="@+id/select_prot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="select_prot"
+            android:text="选择端口" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="open_prot"
+            android:text="开启端口" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,12 +1,6 @@
 package com.wangdh.demolist;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Looper;
-import android.widget.Toast;
-
-import com.wangdh.demolist.service.PService;
-import com.wangdh.utilslibrary.utils.root.Shell;
 
 /**
  * Created by JuQiu
@@ -49,7 +43,7 @@ public class AppCrashHandler implements Thread.UncaughtExceptionHandler {
             return false;
         }
         ex.printStackTrace();
-//        Intent intent = new Intent(mContext, PService.class);
+//        Intent intent = new Intent(mContext, StartAppService.class);
 //        intent.putExtra("key","error");
 //        mContext.startService(intent);
 //        new Thread() {

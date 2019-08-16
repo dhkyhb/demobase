@@ -22,8 +22,14 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class PService extends Service {
-    public PService() {
+//android:exported	表示是否允许除了当前程序之外的其他程序访问这个服务
+//android:enabled	表示是否启用这个服务
+//android:permission	是权限声明
+//android:process	是否需要在单独的进程中运行,当设置为android:process=”:remote”时，代表Service在单独的进程中运行。注意“：”很重要，它的意思是指要在当前进程名称前面附加上当前的包名，所以“remote”和”:remote”不是同一个意思，前者的进程名称为：remote，而后者的进程名称为：App-packageName:remote。
+//android:isolatedProcess 	设置 true 意味着，服务会在一个特殊的进程下运行，这个进程与系统其他进程分开且没有自己的权限。与其通信的唯一途径是通过服务的API(bind and start)。
+//
+public class StartAppService extends Service {
+    public StartAppService() {
     }
 
     private Disposable mDisposable;
@@ -39,11 +45,10 @@ public class PService extends Service {
                     public void accept(@NonNull Long aLong) throws Exception {
                         Log.e("心跳", "" + aLong);
 //                        try {
-//                            isStart(PService.this);
+//                            isStart(StartAppService.this);
 //                        } catch (Exception e) {
 //                            e.printStackTrace();
 //                        }
-
                     }
                 });
     }
@@ -62,12 +67,14 @@ public class PService extends Service {
         if (intent != null) {
             String key = intent.getStringExtra("key");
             if (!TextUtils.isEmpty(key)) {
-                TLog.e("监听到了异常 :" + key);
-                try {
-                    new Shell().writeLog();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                TLog.e("监听到了 :" + key);
+                startyc();
+
+//                try {
+//                    new Shell().writeLog();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -83,9 +90,9 @@ public class PService extends Service {
         String p = "com.sand.airdroid";
         boolean run = new Shell().isRun(p);
         TLog.e("com.sand.airdroid 是否运行：" + run);
-        if (!run) {
+//        if (!run) {
             launchAPK1(p);
-        }
+//        }
     }
 
     public boolean isStart(Context context) {

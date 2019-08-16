@@ -1,4 +1,4 @@
-package com.wangdh.demolist.ui.px;
+package com.wangdh.demolist.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,13 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.wangdh.demolist.R;
-import com.wangdh.demolist.service.PService;
-import com.wangdh.demolist.ui.HttpActivity;
 import com.wangdh.demolist.ui.aty.RootActivity;
-import com.wangdh.utilslibrary.dblibrary.DBTest;
-import com.wangdh.utilslibrary.netlibrary.NetTest;
-import com.wangdh.utilslibrary.rx.RXTest;
-import com.wangdh.utilslibrary.utils.file.FileToolTest;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
 import java.util.UUID;
@@ -38,5 +32,9 @@ public class PXActivity extends AppCompatActivity {
     public void click2(View view) {
         startActivity(new Intent(this, HttpActivity.class));
 //        FileToolTest.test(this);
+    }
+
+    public void click3(View view) {
+        startActivity(new Intent(this, SerialPortTestActivity.class));
     }
 }

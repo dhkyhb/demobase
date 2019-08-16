@@ -217,4 +217,17 @@ public class Wbyte {
         }
         return "";
     }
+
+    public static String bcdToString(byte[] bcdNum) {
+        StringBuffer sb = new StringBuffer();
+        try {
+            int len = bcdNum.length;
+            for (int i = 0; i < len; i++) {
+                sb.append(Integer.toHexString((bcdNum[i] & 0xF0) >> 4));
+                sb.append(Integer.toHexString(bcdNum[i] & 0x0F));
+            }
+        } catch (Exception e) {
+        }
+        return sb.toString().toUpperCase();
+    }
 }

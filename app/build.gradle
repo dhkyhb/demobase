@@ -25,7 +25,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.wangdh.demolist"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,11 @@ android {
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: "com.wangdh.demolist",
+                JPUSH_APPKEY : "3b7f7f3b43d2af6aa5bb89a4", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
     }
     buildTypes {
         release {
@@ -71,6 +76,12 @@ dependencies {
 //    implementation project(':netlibrary')
     implementation project(':utilslibrary')
 
+
+
+    implementation 'cn.jiguang.sdk:jpush:3.3.2'
+    // 此处以JPush 3.3.2 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:2.1.0'
+    // 此处以JCore 2.1.0 版本为例。
 
 
 }
