@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="@dimen/dp10"
+    tools:context=".ui.OrderActivity">
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="回款"
+        android:background="@color/deepskyblue"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp18" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_above="@id/btn"
+        android:background="#F0F0F0"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="基本信息"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp18"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="订单号：201907221658235164\n
+提交时间: 2019-07-22 10:23:03\n
+客户名称: 隆航\n
+工作类型: 滤芯更换\n
+指派人: 自助接单\n
+来源类型: 本平台\n
+联系人: 隆\n
+联系方式: 13098877149\n
+报修地址: 广东省深圳市\n
+"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp18" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=" "
+                android:textSize="@dimen/sp18"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="报修信息"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp18"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="@dimen/dp10"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:background="@mipmap/ysj" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="点击查看设备"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/sp10" />
+                </LinearLayout>
+
+
+                <!--<ImageView-->
+                <!--android:layout_width="@dimen/dp10"-->
+                <!--android:layout_height="@dimen/dp10"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="@mipmap/genduo" />-->
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="订单状态：支付完成,财务自动确认,待结清\n
+预约时间：2019-07-23 上午\n
+问题描述：测试支付宝支付\n
+师傅姓名：隆师傅\n
+师傅手机号：15807195630\n
+
+配件金额：0.00\n
+人工费：0.00\n
+减免：0.00\n
+安装费：0.01\n
+成本价格：0.00\n
+订单总价：0.01\n
+支付方式：支付宝\n
+第三方订单号：2019072222001456960531183171\n
+"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp18" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=" "
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp18"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="财务信息"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp18"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="@dimen/dp10"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:background="@mipmap/huikuan" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="查看回款记录"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/sp10" />
+                </LinearLayout>
+
+
+                <!--<ImageView-->
+                <!--android:layout_width="@dimen/dp10"-->
+                <!--android:layout_height="@dimen/dp10"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="@mipmap/genduo" />-->
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="回款金额：0\n
+未回款金额：0\n
+回款方式：线下支付\n
+核销金额：0\n
+核销方式：\n
+是否核销完成：已核销\n
+否给予发票：未申请\n
+"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp18" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -31,9 +31,9 @@ public class AppContext extends BaseApplication {
         JPushInterface.init(this);
 
         UtilsLibrary.init(this);
-        Intent p = new Intent(this, StartAppService.class);
-        startService(p);
-        startService(new Intent(this, LogService.class));
+//        Intent p = new Intent(this, StartAppService.class);
+//        startService(p);
+//        startService(new Intent(this, LogService.class));
     }
 
     public static String getPmsg() {

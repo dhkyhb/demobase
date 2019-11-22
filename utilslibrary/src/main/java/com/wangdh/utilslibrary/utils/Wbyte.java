@@ -51,7 +51,7 @@ public class Wbyte {
         int length = msg.length;
         String s = decimalToHex(length);
         String s1 = left0(s, 4);
-        byte[] bytes = BCDHelper.stringToBcd(s1);
+        byte[] bytes = stringToBcd(s1);
         byte[] sucess = new byte[msg.length + 2];
         System.arraycopy(bytes, 0, sucess, 0, 2);
         System.arraycopy(msg, 0, sucess, 2, msg.length);
@@ -61,7 +61,7 @@ public class Wbyte {
     public static byte[] add10Len(byte[] msg) {
         int length = msg.length;
         String format = String.format("%04d", length);
-        byte[] bytes = BCDHelper.stringToBcd(format);
+        byte[] bytes = stringToBcd(format);
         byte[] sucess = new byte[msg.length + 2];
         System.arraycopy(bytes, 0, sucess, 0, 2);
         System.arraycopy(msg, 0, sucess, 2, msg.length);
@@ -70,14 +70,14 @@ public class Wbyte {
 
     //把表示16进制的byte 转换成10进制数字
     public static int toIntFor16(byte[] msg) {
-        String s = BCDHelper.bcdToString(msg);
+        String s = bcdToString(msg);
         Integer x = Integer.parseInt(s, 16);
         return x.intValue();
     }
 
     //把表示10进制的byte 转换成10进制数字
     public static int toIntFor10(byte[] msg) {
-        String s = BCDHelper.bcdToString(msg);
+        String s = bcdToString(msg);
         Integer x = Integer.parseInt(s, 10);
         return x.intValue();
     }
@@ -92,7 +92,7 @@ public class Wbyte {
     public static byte[] to16byte(int num, int len) {
         String s = decimalToHex(num);
         s = left0(s);
-        byte[] bytes = BCDHelper.stringToBcd(s);
+        byte[] bytes = stringToBcd(s);
         if (len <= 0 || bytes.length - len >= 0) {
             return bytes;
         }
@@ -107,7 +107,7 @@ public class Wbyte {
     public static byte[] to10byte(int num, int len) {
         String s = String.valueOf(num);
         s = left0(s);
-        byte[] bytes = BCDHelper.stringToBcd(s);
+        byte[] bytes = stringToBcd(s);
         if (len <= 0 || bytes.length - len >= 0) {
             return bytes;
         }
@@ -158,7 +158,7 @@ public class Wbyte {
 
     //出现单数
     public static byte[] addLeftByANSI(byte[] src, String msg) {
-        byte[] bytes = BCDHelper.stringToBcd(msg);
+        byte[] bytes = stringToBcd(msg);
         byte[] _new = new byte[src.length + bytes.length];
         System.arraycopy(bytes, 0, _new, 0, bytes.length);
         System.arraycopy(src, 0, _new, bytes.length, src.length);
@@ -166,7 +166,7 @@ public class Wbyte {
     }
 
     public static byte[] addRightByANSI(byte[] src, String msg) {
-        byte[] bytes = BCDHelper.stringToBcd(msg);
+        byte[] bytes = stringToBcd(msg);
         byte[] _new = new byte[src.length + bytes.length];
         System.arraycopy(src, 0, _new, 0, src.length);
         System.arraycopy(bytes, 0, _new, src.length, bytes.length);
@@ -209,7 +209,7 @@ public class Wbyte {
     }
 
     public static String fromANSI(String msg) {
-        byte[] bytes = BCDHelper.stringToBcd(msg);
+        byte[] bytes = stringToBcd(msg);
         try {
             return new String(bytes, "GBK").toString();
         } catch (Exception e) {
@@ -229,5 +229,33 @@ public class Wbyte {
         } catch (Exception e) {
         }
         return sb.toString().toUpperCase();
+    }
+
+    public static byte[] stringToBcd(String src) {
+        int inum = 0;
+        int numlen = src.length();
+        if ((numlen % 2) > 0) return null;
+        byte[] dst = new byte[numlen / 2];
+
+        for (int i = 0; i < numlen; ) {
+            //TODO: 过滤空格
+            char hghch = ConvertHexChar(src.charAt(i));
+            char lowch = ConvertHexChar(src.charAt(i + 1));
+
+            dst[inum++] = (byte) (hghch * 16 + lowch);
+            i += 2;
+        }
+        return dst;
+    }
+
+    private static char ConvertHexChar(char ch) {
+        if ((ch >= '0') && (ch <= '9'))
+            return (char) (ch - 0x30);
+        else if ((ch >= 'A') && (ch <= 'F'))
+            return (char) (ch - 'A' + 10);
+        else if ((ch >= 'a') && (ch <= 'f'))
+            return (char) (ch - 'a' + 10);
+        else
+            return (char) (-1);
     }
 }

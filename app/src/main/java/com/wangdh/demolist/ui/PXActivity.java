@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.wangdh.demolist.R;
+import com.wangdh.demolist.ui.adb.YuanChengActivity;
 import com.wangdh.demolist.ui.aty.RootActivity;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
@@ -36,5 +37,13 @@ public class PXActivity extends AppCompatActivity {
 
     public void click3(View view) {
         startActivity(new Intent(this, SerialPortTestActivity.class));
+    }
+
+    public void click4(View view) {
+        startActivity(new Intent(this, ListActivity.class));
+    }
+
+    public void adbST(View view) {
+        startActivity(new Intent(this, YuanChengActivity.class));
     }
 }

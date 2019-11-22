@@ -96,4 +96,5 @@ public class RootActivity extends AppCompatActivity {
         }
 
     }
+
 }

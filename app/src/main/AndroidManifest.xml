@@ -12,16 +12,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 静默安装 -->
     <!-- <uses-permission android:name="android.permission.INSTALL_PACKAGES" /> -->
     <!-- Android 8.0 app 内自动更新安装失败,闪退的问题要添加如下权限 -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-    <!--极光权限-->
-
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 极光权限 -->
     <!-- Required -->
     <permission
         android:name="com.wangdh.demolist.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <!-- Required  一些系统要求的权限，如访问网络等-->
+        android:protectionLevel="signature" /> <!-- Required  一些系统要求的权限，如访问网络等 -->
     <uses-permission android:name="com.zhnc.watch.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,10 +26,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
-
-    <!-- Optional for location -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Optional for location -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -44,14 +36,16 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-
     <application
         android:name=".AppContext"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SerialPortTestActivity"></activity>
+        <activity android:name=".ui.adb.YuanChengActivity"></activity>
+        <activity android:name=".ui.OrderActivity" />
+        <activity android:name=".ui.ListActivity" />
+        <activity android:name=".ui.SerialPortTestActivity" />
 
         <service
             android:name=".service.SerialPortService"
@@ -80,8 +74,6 @@
         <!-- </intent-filter> -->
         <!-- </receiver> -->
         <activity android:name=".ui.updata.UpAPPActivity" /> <!-- <activity android:name=".ui.px.PXActivity"></activity> -->
-
-
         <service
             android:name=".service.StartAppService"
             android:enabled="true"
@@ -99,9 +91,7 @@
             <intent-filter>
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
-        </service>
-
-        <!--                       广播                  -->
+        </service> <!-- 广播 -->
         <receiver
             android:name=".broadcast.jpush.JsonReceiver"
             android:enabled="true"
@@ -128,7 +118,6 @@
                 <category android:name="com.app.adservice" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

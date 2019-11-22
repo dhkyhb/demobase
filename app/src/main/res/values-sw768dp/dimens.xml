@@ -6,4 +6,11 @@
     <dimen name="dp41">384.0000dp</dimen>
     <dimen name="dp50">720</dimen>
     <dimen name="sp50">35.5556sp</dimen>
+    <dimen name="sp20">14.2222sp</dimen>
+    <dimen name="sp18">12.8000sp</dimen>
+    <dimen name="sp15">10.6667sp</dimen>
+    <dimen name="sp10">7.1111sp</dimen>
+    <dimen name="dp25">17.7778dp</dimen>
+    <dimen name="dp20">14.2222dp</dimen>
+    <dimen name="dp10">7.1111dp</dimen>
 </resources>

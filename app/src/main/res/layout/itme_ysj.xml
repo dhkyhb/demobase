@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp10"
+    android:layout_marginRight="@dimen/dp10"
+    android:background="@color/white">
+
+    <ImageView
+        android:layout_width="@dimen/dp20"
+        android:layout_height="@dimen/dp20"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:background="@mipmap/genduo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="浏阳市文化旅游广电体育局"
+            android:textSize="@dimen/sp18"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:background="@mipmap/renwu" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text=" : 滤芯更换"
+                android:textSize="@dimen/sp15" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:background="@mipmap/gzz" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text=" : 李某"
+                android:textSize="@dimen/sp15" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="服务时间：2019-07-31 18:26:37 ~ 2019-07-31 18:28:05"
+            android:textSize="@dimen/sp10" />
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="结束时间：2019-07-31 18:28:05"-->
+        <!--android:textSize="@dimen/sp10" />-->
+    </LinearLayout>
+
+</RelativeLayout>

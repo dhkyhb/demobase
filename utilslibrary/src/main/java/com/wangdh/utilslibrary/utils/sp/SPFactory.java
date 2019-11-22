@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * name：
  * 描述：2017年10月23日 09:34:27
  */
-
+@Deprecated
 public class SPFactory {
     private static Map<String, Class> map = new HashMap<>();
     // 默认 如果是select 属性 get 取出的是 value 如果没value 会取出key

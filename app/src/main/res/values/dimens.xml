@@ -8,4 +8,11 @@
     <dimen name="dp50">720</dimen>
 
     <dimen name="sp50">50sp</dimen>
+    <dimen name="sp20">20sp</dimen>
+    <dimen name="sp18">18sp</dimen>
+    <dimen name="sp15">15sp</dimen>
+    <dimen name="sp10">10sp</dimen>
+    <dimen name="dp25">25dp</dimen>
+    <dimen name="dp20">20dp</dimen>
+    <dimen name="dp10">10dp</dimen>
 </resources>

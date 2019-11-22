@@ -1,134 +1,240 @@
 package com.wangdh.demolist.ui;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.PopupWindow;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-import com.kongqw.serialportlibrary.Device;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
-import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
-import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.wangdh.demolist.R;
-import com.wangdh.demolist.service.SerialPortService;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.exception.AppException;
+import com.wangdh.utilslibrary.serialportlibrary.Device;
+import com.wangdh.utilslibrary.serialportlibrary.SerialPort;
+import com.wangdh.utilslibrary.serialportlibrary.SerialPortFinder;
+import com.wangdh.utilslibrary.serialportlibrary.listener.LogcatListener;
+import com.wangdh.utilslibrary.serialportlibrary.listener.SerialReadListener;
+import com.wangdh.utilslibrary.utils.BCDHelper;
+import com.wangdh.utilslibrary.utils.Wbyte;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class SerialPortTestActivity extends AppCompatActivity {
-    Button protlist;
-    ArrayList<Device> scan;
-    List<String> data = new ArrayList<>();
-    SerialPortService.SerialPortBinder binder;
+
+    private Spinner spinner;
+    private EditText btl;
+    private EditText sendData;
+    private TextView log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serial_port_test);
-        protlist = findViewById(R.id.select_prot);
+        spinner = findViewById(R.id.spinner);
+        btl = findViewById(R.id.btl);
+        sendData = findViewById(R.id.sendData);
+        log = findViewById(R.id.log);
+
+        sendData.setText("EC07FFFE0100C1B4");
+        // Example of a call to a native method
+//        TextView tv = findViewById(R.id.sample_text);
+//        tv.setText(new SerialPort().stringFromJNI());
+        initPort();
     }
 
-    public void spt1(View view) {
-        startService(new Intent(this, SerialPortService.class));
+    private void setLog(final String msg) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String s = log.getText().toString();
+                log.setText(msg + "\n" + s);
+            }
+        });
+
     }
 
-    private ServiceConnection sc = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            TLog.e("ComponentName:" + name);
-            binder = (SerialPortService.SerialPortBinder) service;
-            scan = binder.getservices().scan();
-            TLog.e("扫描串口:" + scan.size());
-//            protlist.setText(scan.get(0).getName());
-            for (Device device : scan) {
-                data.add(device.getName());
-                TLog.e(device.getName());
+    private ArrayList<Device> devices;
+    private int select = 1;
+
+    private void initPort() {
+        SerialPortFinder serialPortFinder = new SerialPortFinder();
+        devices = serialPortFinder.getDevices();
+        if (devices == null || devices.size() <= 0) {
+            return;
+        }
+        String[] key = new String[devices.size()];
+        for (int i = 0; i < devices.size(); i++) {
+            key[i] = devices.get(i).getName();
+        }
+        spinner.setAdapter(new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, key));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                select = position;
             }
 
-        }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            TLog.e("ComponentName:" + name);
-        }
-    };
-
-    public void spt2(View view) {
-        Intent intent = new Intent(this, SerialPortService.class);
-        bindService(intent, sc, BIND_AUTO_CREATE);
+            }
+        });
     }
 
-    public void spt3(View view) {
-        try {
-            unbindService(sc);
-        } catch (Exception e) {
+    SerialPort serialPort;
+
+    public void openSP(View view) {
+        File file = new File("/proc/tty/drivers");
+        boolean canRead = file.canRead();
+        Log.e("www", "是否可以读写 = " + canRead);
+
+        Device device = devices.get(select);
+        Log.e("wdh", "选择串口：" + device.getName());
+        String b = btl.getText().toString().trim();
+        if (serialPort != null) {
+            close(view);
         }
-    }
-
-    public void select_prot(View view) {
-        initListPopupIfNeed();
-        mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-        mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_TOP);
-        mListPopup.show(view);
-    }
-
-    private QMUIListPopup mListPopup;
-
-    private void initListPopupIfNeed() {
-        if (mListPopup == null) {
-
-//            String[] listItems = new String[]{
-//                    "Item 1",
-//                    "Item 2",
-//                    "Item 3",
-//                    "Item 4",
-//                    "Item 5",
-//            };
-//            List<String> data = new ArrayList<>();
-//
-//            Collections.addAll(data, listItems);
-
-            ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
-
-            mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
-            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
+        if (serialPort == null) {
+            serialPort = new SerialPort();
+            serialPort.setReadListener(new SerialReadListener() {
                 @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    protlist.setText(data.get(i));
-                    mListPopup.dismiss();
+                public void read(byte[] msg) {
+                    setLog("返回：" + bcdToString(msg));
                 }
-            });
-            mListPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
                 @Override
-                public void onDismiss() {
+                public void error(AppException e) {
 
                 }
             });
+            serialPort.setLogcatListen(new LogcatListener() {
+                @Override
+                public void rev(String log) {
+                    setLog(log);
+                }
+            });
+            try {
+                serialPort.open(device.getFile(), b);
+                setLog("串口打开成功");
+                readThread();
+            } catch (Exception e) {
+                e.printStackTrace();
+                serialPort = null;
+                setLog("串口打开失败");
+            }
         }
     }
 
-    String[] btl = new String[]{"2400", "4800", "9600", "14400", "19200", "28800", "38400", "57600", "76800", "115200"};
+    private void readThread() {
 
-    public void open_prot(View view) {
-        for (String datum : data) {
-            for (String s : btl) {
-                boolean open = binder.getservices().open(datum.toString(), s);
-                if (open) {
-                    break;
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                byte[] mReadBuffer = new byte[1024];
+                while (!isInterrupted()) {
+                    int size = 0;
+                    try {
+                        mReadBuffer = new byte[1024];
+                        size = serialPort.mFileInputStream.read(mReadBuffer);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (-1 == size || 0 >= size) {
+//                        setLog("数据为null");
+                        continue;
+                    }
+                    byte[] readBytes = new byte[size];
+                    System.arraycopy(mReadBuffer, 0, readBytes, 0, size);
+                    setLog("读取到了" + new String(readBytes));
                 }
             }
+        };
+    }
+
+    public void send(View view) {
+        if (serialPort == null) {
+            setLog("串口未打开");
+            return;
         }
+        String d = sendData.getText().toString().trim();
+        byte[] bytes = stringToBcd(d);
+        serialPort.send(bytes);
+    }
 
 
+    public void read(View view) {
+        if (serialPort == null) {
+            setLog("串口未打开");
+            return;
+        }
+        byte[] response = serialPort.response();
+//        byte[] mReadBuffer = new byte[1024];
+//        int size = 0;
+//        try {
+//            size = serialPort.mFileInputStream.read(mReadBuffer);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        setLog("size" + size);
+//        if (-1 == size || 0 >= size) {
+//            return;
+//        }
+//        byte[] readBytes = new byte[size];
+//        System.arraycopy(mReadBuffer, 0, readBytes, 0, size);
+//        setLog("读取到了" + new String(readBytes));
+    }
+
+    public void close(View view) {
+        if (serialPort == null) {
+            setLog("未发现打开的串口");
+            return;
+        }
+        serialPort.destroy();
+        serialPort = null;
+    }
+
+
+    public static byte[] stringToBcd(String src) {
+        int inum = 0;
+        int numlen = src.length();
+        if ((numlen % 2) > 0) return null;
+        byte[] dst = new byte[numlen / 2];
+
+        for (int i = 0; i < numlen; ) {
+            //TODO: 过滤空格
+            char hghch = ConvertHexChar(src.charAt(i));
+            char lowch = ConvertHexChar(src.charAt(i + 1));
+
+            dst[inum++] = (byte) (hghch * 16 + lowch);
+            i += 2;
+        }
+        return dst;
+    }
+
+    private static char ConvertHexChar(char ch) {
+        if ((ch >= '0') && (ch <= '9'))
+            return (char) (ch - 0x30);
+        else if ((ch >= 'A') && (ch <= 'F'))
+            return (char) (ch - 'A' + 10);
+        else if ((ch >= 'a') && (ch <= 'f'))
+            return (char) (ch - 'a' + 10);
+        else
+            return (char) (-1);
+    }
+
+    public static String bcdToString(byte[] bcdNum) {
+        int len = bcdNum.length;
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < len; i++) {
+            sb.append(Integer.toHexString((bcdNum[i] & 0xF0) >> 4));
+            sb.append(Integer.toHexString(bcdNum[i] & 0x0F));
+        }
+        return sb.toString().toUpperCase();
     }
 }

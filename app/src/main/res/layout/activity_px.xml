@@ -19,6 +19,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="adbST"
+        android:text="打开adb 试调" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="click2"
         android:text="访问http" />
 
@@ -27,5 +33,11 @@
         android:layout_height="wrap_content"
         android:onClick="click3"
         android:text="访问串口测试" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="click4"
+        android:text="列表测试" />
 
 </LinearLayout>

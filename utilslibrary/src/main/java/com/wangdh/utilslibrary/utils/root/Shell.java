@@ -9,6 +9,7 @@ import com.wangdh.utilslibrary.utils.file.FileSDTool;
 import com.wangdh.utilslibrary.utils.logger.TLog;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -57,6 +58,48 @@ public class Shell {
             if (process != null) {
                 process.destroy();
             }
+        }
+        return data;
+    }
+
+    /**
+     * 执行shell指令
+     *
+     * @param strings 指令集
+     * @return 指令集是否执行成功
+     */
+    public StringBuffer su(String... strings) {
+        BufferedReader bufferedReader = null;
+        String str = null;
+        StringBuffer data = new StringBuffer();
+        Process process = null;
+        try {
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+
+            for (String s : strings) {
+                outputStream.writeBytes(s + "\n");
+                outputStream.flush();
+            }
+            BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            if (error != null) {
+                while ((str = error.readLine()) != null)    //开始读取日志，每次读取一行
+                {
+                    data.append(str + "\n");
+                }
+            }
+
+            bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            if (bufferedReader == null) {
+                return data;
+            }
+            bufferedReader.toString();
+            while ((str = bufferedReader.readLine()) != null)    //开始读取日志，每次读取一行
+            {
+                data.append(str + "\n");
+            }
+            process.waitFor();
+        } catch (Exception e) {
         }
         return data;
     }

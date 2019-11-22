@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -61,9 +61,9 @@ public class FileAssetsTool {
         data.put("sdPath", sdPath);
         data.put("sdFileName", sdFileName);
 
-        ObservableOnSubscribeAbs<Map> observableOnSubscribe = new ObservableOnSubscribeAbs<Map>() {
+        ObservableOnSubscribeAbs<Integer> observableOnSubscribe = new ObservableOnSubscribeAbs<Integer>() {
             @Override
-            public void subscribe(ObservableEmitter<Map> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 Map<String, Object> data = getData();
                 Context context = (Context) data.get("context");
                 String assetsName = (String) data.get("assetsName");
@@ -97,16 +97,15 @@ public class FileAssetsTool {
 
                     int available = is.available();
                     int pro = 0;
-                    NumberFormat numberFormat = NumberFormat.getInstance();
                     while ((byteCount = is.read(buffer)) != -1) {// 循环从输入流读取
                         // buffer字节
                         fos.write(buffer, 0, byteCount);// 将读取的输入流写入到输出流
                         pro += byteCount;
                         String div = div(String.valueOf(pro), String.valueOf(available));
                         int progress = Float.valueOf(mul(div, "100")).intValue();
-                        data.put("progress", String.valueOf(progress));
-                        emitter.onNext(data);
+                        emitter.onNext(progress);
                     }
+                    emitter.onComplete();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -125,15 +124,14 @@ public class FileAssetsTool {
 
         observableOnSubscribe.setData(data);
         if (callback == null) {
-            callback = new Observer<Map>() {
+            callback = new Observer<Integer>() {
                 @Override
                 public void onSubscribe(Disposable d) {
 
                 }
 
                 @Override
-                public void onNext(Map map) {
-                    String progress = (String) map.get("progress");
+                public void onNext(Integer progress) {
                     TLog.e("复制进度" + progress);
                 }
 
@@ -151,14 +149,26 @@ public class FileAssetsTool {
 
         Observable.create(observableOnSubscribe)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(getThreadType())
                 .subscribe(callback);
+    }
+
+    public int threadType = 0;//0默认 主线程， 1：子线程
+
+    public Scheduler getThreadType() {
+        if (threadType == 1) {
+            Scheduler io = Schedulers.io();
+            return io;
+        } else {
+            Scheduler scheduler = AndroidSchedulers.mainThread();
+            return scheduler;
+        }
     }
 
     public static String div(String v1, String v2) {
         BigDecimal b1 = new BigDecimal(v1);
         BigDecimal b2 = new BigDecimal(v2);
-        return b1.divide(b2, 2, BigDecimal.ROUND_HALF_UP).toString();
+        return b1.divide(b2, 2, BigDecimal.ROUND_DOWN).toString();
     }
 
     public static String mul(String v1, String v2) {
