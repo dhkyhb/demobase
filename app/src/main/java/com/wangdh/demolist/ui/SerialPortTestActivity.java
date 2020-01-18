@@ -103,7 +103,7 @@ public class SerialPortTestActivity extends AppCompatActivity {
             serialPort.setReadListener(new SerialReadListener() {
                 @Override
                 public void read(byte[] msg) {
-                    setLog("返回：" + bcdToString(msg));
+                    setLog("返回：" + Wbyte.bcdToString(msg));
                 }
 
                 @Override
@@ -162,7 +162,7 @@ public class SerialPortTestActivity extends AppCompatActivity {
             return;
         }
         String d = sendData.getText().toString().trim();
-        byte[] bytes = stringToBcd(d);
+        byte[] bytes = Wbyte.stringToBcd(d);
         serialPort.send(bytes);
     }
 
@@ -194,47 +194,10 @@ public class SerialPortTestActivity extends AppCompatActivity {
             setLog("未发现打开的串口");
             return;
         }
-        serialPort.destroy();
+        serialPort.close();
         serialPort = null;
     }
 
 
-    public static byte[] stringToBcd(String src) {
-        int inum = 0;
-        int numlen = src.length();
-        if ((numlen % 2) > 0) return null;
-        byte[] dst = new byte[numlen / 2];
 
-        for (int i = 0; i < numlen; ) {
-            //TODO: 过滤空格
-            char hghch = ConvertHexChar(src.charAt(i));
-            char lowch = ConvertHexChar(src.charAt(i + 1));
-
-            dst[inum++] = (byte) (hghch * 16 + lowch);
-            i += 2;
-        }
-        return dst;
-    }
-
-    private static char ConvertHexChar(char ch) {
-        if ((ch >= '0') && (ch <= '9'))
-            return (char) (ch - 0x30);
-        else if ((ch >= 'A') && (ch <= 'F'))
-            return (char) (ch - 'A' + 10);
-        else if ((ch >= 'a') && (ch <= 'f'))
-            return (char) (ch - 'a' + 10);
-        else
-            return (char) (-1);
-    }
-
-    public static String bcdToString(byte[] bcdNum) {
-        int len = bcdNum.length;
-
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < len; i++) {
-            sb.append(Integer.toHexString((bcdNum[i] & 0xF0) >> 4));
-            sb.append(Integer.toHexString(bcdNum[i] & 0x0F));
-        }
-        return sb.toString().toUpperCase();
-    }
 }

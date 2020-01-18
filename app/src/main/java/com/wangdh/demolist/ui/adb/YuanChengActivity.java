@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.wangdh.demolist.R;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 import com.wangdh.utilslibrary.utils.root.CMD;
 
 public class YuanChengActivity extends AppCompatActivity {

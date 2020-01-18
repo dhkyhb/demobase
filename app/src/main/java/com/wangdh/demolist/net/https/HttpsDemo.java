@@ -3,7 +3,7 @@ package com.wangdh.demolist.net.https;
 import android.content.Context;
 
 
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -119,8 +119,8 @@ public class HttpsDemo {
 
     private static class MyHostnameVerifier implements HostnameVerifier {
         public boolean verify(String hostname, SSLSession session) {
-            TLog.p("MyHostnameVerifier!!");
-            TLog.p(hostname);
+            TLog.e("MyHostnameVerifier!!");
+            TLog.e(hostname);
             return true;
         }
     }

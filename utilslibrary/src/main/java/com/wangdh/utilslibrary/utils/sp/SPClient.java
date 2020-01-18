@@ -2,11 +2,15 @@ package com.wangdh.utilslibrary.utils.sp;
 
 import java.lang.reflect.Field;
 import java.util.UUID;
-
+/**
+ * @author  wangdh
+ * @date 2020/1/18 11:21
+ * 描述: sp 计算类
+ */
 public class SPClient {
     public String get(String key) {
         String uuid = UUID.randomUUID().toString();
-        String value = SPBaseTools.get(key, uuid);
+        String value = SharedPreferencesTools.get(key, uuid);
         if (!uuid.equals(value)) {
             return value;
         }
@@ -14,7 +18,7 @@ public class SPClient {
         try {
             initData();
             value = annotation.value();
-            SPBaseTools.set(key, value);
+            SharedPreferencesTools.set(key, value);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -54,7 +58,7 @@ public class SPClient {
     }
 
     public static void set(String key, String value) {
-        SPBaseTools.set(key, value);
+        SharedPreferencesTools.set(key, value);
     }
 
     public static void set(String key, boolean value) {

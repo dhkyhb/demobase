@@ -2,12 +2,14 @@ package com.wangdh.utilslibrary;
 
 import android.content.Context;
 
+import com.wangdh.utilslibrary.config.AppConfig;
 import com.wangdh.utilslibrary.dblibrary.DBLibrary;
 import com.wangdh.utilslibrary.netlibrary.NetLibrary;
+import com.wangdh.utilslibrary.utils.MultimediaUtils;
 import com.wangdh.utilslibrary.utils.SPTools;
 import com.wangdh.utilslibrary.utils.TDevice;
-import com.wangdh.utilslibrary.utils.logger.TLog;
-import com.wangdh.utilslibrary.utils.sp.SPBaseTools;
+import com.wangdh.utilslibrary.utils.TLog;
+import com.wangdh.utilslibrary.utils.sp.SharedPreferencesTools;
 
 /**
  * @author wangdh
@@ -17,11 +19,14 @@ import com.wangdh.utilslibrary.utils.sp.SPBaseTools;
 public class UtilsLibrary {
 
     public static void init(Context context) {
+        AppConfig.init(context);
+        TLog.init(context);
+
         TDevice.init(context);
         SPTools.init(context);
-        SPBaseTools.init(context);
-        TLog.init(context);
+        SharedPreferencesTools.init(context);
         DBLibrary.init(context);
         NetLibrary.init();
+        MultimediaUtils.init(context);
     }
 }

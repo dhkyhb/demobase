@@ -1,14 +1,28 @@
 package com.wangdh.demolist.ui;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.View;
 
+import com.mobile.mobilehardware.sdcard.SDCardHelper;
+import com.mobile.mobilehardware.signal.SignalHelper;
+import com.mobile.mobilehardware.uniqueid.PhoneIdHelper;
 import com.wangdh.demolist.R;
 import com.wangdh.demolist.ui.adb.YuanChengActivity;
 import com.wangdh.demolist.ui.aty.RootActivity;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -45,5 +59,10 @@ public class PXActivity extends AppCompatActivity {
 
     public void adbST(View view) {
         startActivity(new Intent(this, YuanChengActivity.class));
+    }
+
+
+    public void click5(View view) {
+        startActivity(new Intent(this, EventBusActivity.class));
     }
 }

@@ -1,6 +1,7 @@
 package com.wangdh.utilslibrary.ui.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
@@ -54,4 +55,6 @@ public class DialogTip {
 //                .create();
 //        return dialog;
 //    }
+
+
 }

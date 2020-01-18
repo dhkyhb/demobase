@@ -1,10 +1,13 @@
 package com.wangdh.utilslibrary.utils.file;
 
+import android.os.Build;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -27,7 +30,11 @@ public class RAR {
         FileOutputStream fos = null;
         BufferedOutputStream bos = null;
         try {
-            zipFile = new ZipFile(zipName);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                zipFile = new ZipFile(zipName, Charset.forName("GBK"));
+            }else{
+                zipFile = new ZipFile(zipName);
+            }
             Enumeration<? extends ZipEntry> emu = zipFile.entries();
             while (emu.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) emu.nextElement();

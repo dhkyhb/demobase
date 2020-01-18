@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.wangdh.demolist.annotation.MenuAnnotation;
 import com.wangdh.demolist.ui.fragment.TextFragment;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 /**
  * Created by wangdh on 2016/11/22.
@@ -52,6 +52,6 @@ public class HttpsDemo extends BaseMenuPresenter {
 
     @MenuAnnotation(name = "按钮3", id = 2)
     public void demo3() {
-        TLog.p("ewerwe");
+        TLog.e("ewerwe");
     }
 }

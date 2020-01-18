@@ -1,5 +1,6 @@
 package com.wangdh.utilslibrary.netlibrary.clien;
 
+import android.app.Dialog;
 import android.content.Context;
 
 import java.util.Map;
@@ -13,10 +14,12 @@ public class OnlineContext {
     protected Context context;
     private OnlineConfig onlineConfig;
 
+    public Dialog dialog1;
+    public Dialog dialog2;
+
     private Map data;
 
     protected String url;
-
 
     public Context getContext() {
         return context;

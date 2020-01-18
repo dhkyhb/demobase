@@ -1,9 +1,6 @@
 package com.wangdh.utilslibrary.utils.file;
 
 import android.os.Environment;
-import android.util.Log;
-
-import com.wangdh.utilslibrary.utils.logger.TLog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +18,7 @@ public class FileSDTool {
     public static String getSDPath() {
         String path = Environment
                 .getExternalStorageDirectory()
-                + File.separator;
+                + File.separator + "aaawdh" + File.separator;
 //                + "adservice"
 //                + File.separator + "download" + File.separator;
         return path;
@@ -63,12 +60,16 @@ public class FileSDTool {
 
         } finally {
             try {
-                if (is != null) is.close();
+                if (is != null) {
+                    is.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
-                if (fos != null) fos.close();
+                if (fos != null) {
+                    fos.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -103,8 +104,9 @@ public class FileSDTool {
      */
     public boolean deleteDirectory(String dir) {
         // 如果dir不以文件分隔符结尾，自动添加文件分隔符
-        if (!dir.endsWith(File.separator))
+        if (!dir.endsWith(File.separator)) {
             dir = dir + File.separator;
+        }
         File dirFile = new File(dir);
         // 如果dir对应的文件不存在，或者不是一个目录，则退出
         if ((!dirFile.exists()) || (!dirFile.isDirectory())) {
@@ -118,15 +120,17 @@ public class FileSDTool {
             // 删除子文件
             if (files[i].isFile()) {
                 flag = deleteFile(files[i].getAbsolutePath());
-                if (!flag)
+                if (!flag) {
                     break;
+                }
             }
             // 删除子目录
             else if (files[i].isDirectory()) {
                 flag = deleteDirectory(files[i]
                         .getAbsolutePath());
-                if (!flag)
+                if (!flag) {
                     break;
+                }
             }
         }
         if (!flag) {
@@ -207,7 +211,7 @@ public class FileSDTool {
         File file = null;
         file = new File(filePath);
         if (!file.exists()) {
-            file.mkdir();
+            file.mkdirs();
         }
     }
 }

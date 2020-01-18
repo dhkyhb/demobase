@@ -21,10 +21,9 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import android.app.Application;
 import android.util.Log;
 
-import com.wangdh.demolist.AppContext;
+import com.wangdh.demolist.APP;
 
 public class HttpService {
 
@@ -101,7 +100,7 @@ public class HttpService {
         InputStream is = null;
         final InputStream inputStream;
         try {
-            inputStream = AppContext.getContext().getAssets().open("srca.cer"); // 得到证书的输入流
+            inputStream = APP.getContext().getAssets().open("srca.cer"); // 得到证书的输入流
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null,
                     new TrustManager[]{new MyX509TrustManager()},

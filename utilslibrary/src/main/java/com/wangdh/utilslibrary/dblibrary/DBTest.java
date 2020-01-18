@@ -3,7 +3,7 @@ package com.wangdh.utilslibrary.dblibrary;
 import com.wangdh.utilslibrary.dblibrary.db.SQL_LogText;
 import com.wangdh.utilslibrary.dblibrary.entity.LogText;
 import com.wangdh.utilslibrary.utils.TimeUtils;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.util.List;
 

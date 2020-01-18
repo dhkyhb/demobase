@@ -24,7 +24,7 @@ public class BarCodeUtils {
      * @param width                  二维码宽度
      * @param height                 二维码高度
      * @param character_set          编码方式（一般使用UTF-8）
-     * @param error_correction_level 容错率 L：7% M：15% Q：25% H：35%
+     * @param error_correction_level 容错率 Log：7% M：15% Q：25% H：35%
      * @param margin                 空白边距（二维码与边框的空白区域）
      * @param color_black            黑色色块
      * @param color_white            白色色块

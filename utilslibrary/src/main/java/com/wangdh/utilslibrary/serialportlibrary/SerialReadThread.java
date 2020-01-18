@@ -3,6 +3,7 @@ package com.wangdh.utilslibrary.serialportlibrary;
 import com.wangdh.utilslibrary.exception.AppException;
 import com.wangdh.utilslibrary.serialportlibrary.listener.ReadThreadStateListener;
 import com.wangdh.utilslibrary.serialportlibrary.listener.SerialReadListener;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.io.FileInputStream;
 
@@ -18,7 +19,12 @@ public class SerialReadThread extends Thread {
 
     SerialReadThread(FileInputStream stream, SerialReadListener listener) {
         this.inputStream = stream;
+        TLog.e("设置：" + readListener);
         this.readListener = listener;
+    }
+
+    public void setReadListener(SerialReadListener readListener) {
+        this.readListener = readListener;
     }
 
     @Override
@@ -30,18 +36,26 @@ public class SerialReadThread extends Thread {
 //            }
             try {
                 int size = 0;
-                mReadBuffer = new byte[1024];
+                mReadBuffer = new byte[255];
                 size = inputStream.read(mReadBuffer);
                 if (-1 == size || 0 >= size) {
                     continue;
                 }
                 byte[] readBytes = new byte[size];
                 System.arraycopy(mReadBuffer, 0, readBytes, 0, size);
-                readListener.read(mReadBuffer);
+//                TLog.e((readListener == null) + "线程读取：" + Wbyte.bcdToString(readBytes));
+                if (readListener != null) {
+//                    byte[] testre = Wbyte.stringToBcd("FF0E00A40B010101030F0F6D54FE");
+//                    readListener.read(testre);
+                    readListener.read(readBytes);
+                }
             } catch (Exception e) {
+                e.printStackTrace();
                 if (!this.isInterrupted()) {
                     //如果不是主动关闭导致的异常 ，将通知给被调用 的类。
-                    readListener.error(new AppException("数据读取异常，读取线程终止"));
+                    if (readListener != null) {
+                        readListener.error(new AppException("数据读取异常，读取线程终止"));
+                    }
                 } else {
                     //是主动关闭 导致的异常 ，则不管。
                 }

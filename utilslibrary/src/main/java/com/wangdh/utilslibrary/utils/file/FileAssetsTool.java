@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 
 import com.wangdh.utilslibrary.rx.ObservableOnSubscribeAbs;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.io.BufferedReader;
 import java.io.File;

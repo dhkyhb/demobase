@@ -1,7 +1,5 @@
 package com.wangdh.utilslibrary.utils.root;
 
-import com.wangdh.utilslibrary.utils.logger.TLog;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;

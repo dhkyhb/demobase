@@ -15,8 +15,7 @@ import com.wangdh.utilslibrary.netlibrary.server.weather.ResultBean;
 import com.wangdh.utilslibrary.netlibrary.server.xiaohua.API_Xiaohua;
 import com.wangdh.utilslibrary.netlibrary.server.xiaohua.XiaoHuaContent;
 import com.wangdh.utilslibrary.netlibrary.server.xiaohua.XiaohuaBody;
-import com.wangdh.utilslibrary.ui.dialog.DialogTip;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 
 /**
@@ -39,7 +38,6 @@ public class NetTest {
         online.setOnlineConfig(config);
 
         //可选项
-        config.waitDialog = DialogTip.getLoading(context);
 
         online.setContext(context);
         API_Xiaohua api = online.getAPI(API_Xiaohua.class);

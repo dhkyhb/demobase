@@ -1,8 +1,5 @@
 package com.wangdh.utilslibrary.utils.sp;
 
-
-import com.wangdh.utilslibrary.R;
-
 /**
  * Created by wangdh on 2017/9/28.
  * name：
@@ -10,6 +7,14 @@ import com.wangdh.utilslibrary.R;
  */
 
 public class Demo {
+    private static final String TAG = Demo.class.getName() + ".";
+
+    @SP(value = "海波", type = String.class)
+    public static final String demo = TAG + "demo";
+
+    @SP(value = "1", type = Integer.class)
+    public static final String init = TAG + "init";
+
     public static void test() {
 //        SPFactory.set(MerchantConfig.merchantName, false);
 //        SPFactory.set(MerchantConfig.merchantName, 1);

@@ -8,18 +8,18 @@ import android.os.Build;
 
 
 /**
- * 作者: wdh <br>
+ * @author : wdh <br>
  * 内容摘要: <br>
  * 创建时间:  2016/7/8 15:25<br>
  * 描述: 存储value值 短小用这个sp ，value较大时请使用Properties<br>
  */
-public class SPBaseTools {
+public class SharedPreferencesTools {
     private static Context context;
     private static boolean sIsAtLeastGB;
     private static String PREF_NAME = "creativelocker.pref";
 
     static {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) { //android》2.3
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             sIsAtLeastGB = true;
         }
     }

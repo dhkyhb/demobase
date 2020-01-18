@@ -1,6 +1,6 @@
 package com.wangdh.demolist.service.jpush;
 
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import cn.jpush.android.service.JCommonService;
 

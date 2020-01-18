@@ -8,7 +8,7 @@ import android.os.IBinder;
 import com.wangdh.utilslibrary.serialportlibrary.Device;
 import com.wangdh.utilslibrary.serialportlibrary.SerialPort;
 import com.wangdh.utilslibrary.serialportlibrary.SerialPortFinder;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.util.ArrayList;
 

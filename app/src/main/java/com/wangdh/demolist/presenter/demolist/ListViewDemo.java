@@ -1,7 +1,7 @@
 package com.wangdh.demolist.presenter.demolist;
 
 import com.wangdh.demolist.annotation.MenuAnnotation;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 /**
  * Created by wangdh on 2018/1/30.
@@ -12,6 +12,6 @@ import com.wangdh.utilslibrary.utils.logger.TLog;
 public class ListViewDemo {
     @MenuAnnotation(name = "listview", id = 1)
     public void demo3() {
-        TLog.p("ewerwe");
+        TLog.e("ewerwe");
     }
 }

@@ -4,11 +4,10 @@ import android.app.Application;
 import android.util.Log;
 
 /**
- * Created by wangdh on 2016/11/16.
- * name：
- * 描述：
+ * @author  wangdh
+ * @date 2020/1/18 12:54
+ * 描述:
  */
-
 public class BaseApplication extends Application {
     private String TAG = BaseApplication.class.getName();
     private static Application context;

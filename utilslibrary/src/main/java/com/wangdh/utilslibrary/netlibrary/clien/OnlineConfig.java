@@ -1,11 +1,8 @@
 package com.wangdh.utilslibrary.netlibrary.clien;
 
 
-import android.app.Dialog;
-
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.parkingwang.okhttp3.LogInterceptor.LogInterceptor;
-import com.wangdh.utilslibrary.netlibrary.server.xiaohua.API_Xiaohua;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,15 +18,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class OnlineConfig {
     //是否显示框架内部日志
     public boolean isLog = true;
-    public String url = "";
+//    public String url = "http://192.168.0.83";
+//    public String url = "http://192.168.0.181";
+    public String url = "http://192.168.0.83:8081/";
     public int time_out = 10000;
 
     public boolean isShowWait = false;
-    public Dialog waitDialog;
 
     public boolean isShowError = false;
     public boolean isErrorToast = false;
-    public Dialog ErrorDialog;
 
 
     public static OnlineConfig getDefConfig() {

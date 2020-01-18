@@ -1,4 +1,4 @@
-package com.wangdh.demolist;
+package com.wangdh.utilslibrary.utils;
 
 import android.app.Activity;
 
@@ -26,7 +26,6 @@ public class AppManager {
         if (activityStack == null) {
             activityStack = new Stack<Activity>();
         }
-
         return instance;
     }
 
@@ -52,7 +51,6 @@ public class AppManager {
         activityStack.add(activity);
     }
 
-
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
      */
@@ -62,7 +60,7 @@ public class AppManager {
     }
 
     /**
-     * 结束当前Activity（堆栈中最后一个压入的）
+     * 结束 当前Activity（堆栈中最后一个压入的）
      */
     public void finishActivity() {
         Activity activity = activityStack.lastElement();

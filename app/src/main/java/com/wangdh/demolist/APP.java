@@ -1,12 +1,11 @@
 package com.wangdh.demolist;
 
-import android.content.Intent;
+import android.os.Environment;
 
 import com.wangdh.demolist.base.BaseApplication;
-import com.wangdh.demolist.service.LogService;
-import com.wangdh.demolist.service.StartAppService;
 import com.wangdh.utilslibrary.UtilsLibrary;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.config.AppConfig;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.io.File;
 
@@ -18,14 +17,14 @@ import cn.jpush.android.api.JPushInterface;
  * 描述：
  */
 
-public class AppContext extends BaseApplication {
+public class APP extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
 //        AppCrashHandler.getInstance().init(this);
-//        String s = AppContext.getPmsg() + "/apk/ad.apk";
+//        String s = APP.getPmsg() + "/apk/ad.apk";
 //        InstallAPK.install(s);
-        TLog.e("AppContext");
+        TLog.e("APP");
 //        new Shell().pr(this);
         JPushInterface.setDebugMode(true); //正式环境时去掉此行代码
         JPushInterface.init(this);
@@ -37,9 +36,12 @@ public class AppContext extends BaseApplication {
     }
 
     public static String getPmsg() {
-        File cacheDir = AppContext.getInstance().getCacheDir();
+        File cacheDir = APP.getInstance().getCacheDir();
         String path = cacheDir.getPath();
         path += "/apk";
         return path;
     }
+
+
+
 }

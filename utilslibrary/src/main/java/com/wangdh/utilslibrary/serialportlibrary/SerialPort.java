@@ -2,12 +2,13 @@ package com.wangdh.utilslibrary.serialportlibrary;
 
 import android.util.Log;
 
+import com.wangdh.utilslibrary.exception.AppErrorCode;
 import com.wangdh.utilslibrary.exception.AppException;
 import com.wangdh.utilslibrary.serialportlibrary.listener.LogcatListener;
 import com.wangdh.utilslibrary.serialportlibrary.listener.ReadThreadStateListener;
 import com.wangdh.utilslibrary.serialportlibrary.listener.SerialReadListener;
 import com.wangdh.utilslibrary.utils.Wbyte;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -34,9 +35,11 @@ public class SerialPort {
     public void setState(SerialState msg) {
         this.state = msg;
     }
+    public SerialState getState() {
+        return this.state;
+    }
 
     public boolean isLog = true;
-    public boolean isAutoRead = true;
 
     static {
         System.loadLibrary("serial-lib");
@@ -86,9 +89,7 @@ public class SerialPort {
             mFileOutputStream = new FileOutputStream(mFd);
             setLog("串口打开成功" + " 数据位:" + dataBits + " 停止位:" + stopBits + " 校验位:" + parity);
             setState(SerialState.INIT);
-            if (isAutoRead) {
-                startResponseThread();
-            }
+            startResponseThread();
             return true;
         } catch (AppException e) {
             setLog("串口打开失败" + " 数据位:" + dataBits + " 停止位:" + stopBits + " 校验位:" + parity);
@@ -99,58 +100,10 @@ public class SerialPort {
         }
     }
 
-    public void closeSerial() {
-        try {
-            close();
-        } catch (Exception e) {
-        }
-        destroy();
-    }
-
     /**
-     * 文件设置最高权限 777 可读 可写 可执行
-     *
-     * @param file 文件
-     * @return 权限修改是否成功
+     * 关闭串口
      */
-    void chmod777(File file) throws AppException {
-        if (null == file || !file.exists()) {
-            throw new AppException("文件不存在");
-        }
-        if (file.canRead() && file.canWrite()) {
-            return;
-        }
-        try {
-            // 获取ROOT权限
-            Process su = Runtime.getRuntime().exec("/system/xbin/su");
-            // 修改文件属性为 [可读 可写 可执行]
-            String cmd = "chmod 777 " + file.getAbsolutePath() + "\n" + "exit\n";
-            su.getOutputStream().write(cmd.getBytes());
-            if (0 == su.waitFor() && file.canRead() && file.canWrite() && file.canExecute()) {
-                return;
-            } else {
-                throw new AppException("操作文件读写权限失败");
-            }
-        } catch (Exception e) {
-            throw new AppException("没有ROOT权限,操作文件读写权限失败");
-        }
-    }
-
-    public void stop() {
-        setState(SerialState.STOP);
-        stopResponseThread();
-    }
-
-    public void reStart() {
-        if (this.state != SerialState.STOP) {
-            //除停止以外的状态都无法重新启动
-            return;
-        }
-        startResponseThread();
-    }
-
-    //销毁
-    public void destroy() {
+    public void closeSerial() {
         setState(SerialState.DESTROY);
         try {
             this.close();
@@ -183,13 +136,69 @@ public class SerialPort {
         mFd = null;
     }
 
+    /**
+     * 暂停
+     */
+    public void stop() {
+        setState(SerialState.STOP);
+        stopResponseThread();
+    }
+
+    /**
+     * 重启，此功能未研发成功
+     */
+    public void reStart() {
+        if (this.state != SerialState.STOP) {
+            //除停止以外的状态都无法重新启动
+            return;
+        }
+        startResponseThread();
+    }
+
+    /**
+     * 文件设置最高权限 777 可读 可写 可执行
+     *
+     * @param file 文件
+     * @return 权限修改是否成功
+     */
+    void chmod777(File file) throws AppException {
+        if (null == file || !file.exists()) {
+            throw new AppException("文件不存在");
+        }
+        if (file.canRead() && file.canWrite()) {
+            return;
+        }
+        try {
+            // 获取ROOT权限
+            Process su = Runtime.getRuntime().exec("/system/xbin/su");
+            // 修改文件属性为 [可读 可写 可执行]
+            String cmd = "chmod 777 " + file.getAbsolutePath() + "\n" + "exit\n";
+            su.getOutputStream().write(cmd.getBytes());
+            if (0 == su.waitFor() && file.canRead() && file.canWrite() && file.canExecute()) {
+                return;
+            } else {
+                throw new AppException("操作文件读写权限失败");
+            }
+        } catch (Exception e) {
+            throw new AppException("没有ROOT权限,操作文件读写权限失败");
+        }
+    }
+
+
     //串口监听只有一个，如想要多个在业务层进行监听
     private SerialReadListener readListener;
     private SerialReadThread serialReadThread;
 
-    //设置读取监听
+    /**
+     * 设置读取监听
+     * @param listener
+     */
     public void setReadListener(SerialReadListener listener) {
+        TLog.e("sp=" + listener);
         this.readListener = listener;
+        if (serialReadThread != null) {
+            serialReadThread.setReadListener(readListener);
+        }
     }
 
     private void sendError(AppException e) {
@@ -199,7 +208,9 @@ public class SerialPort {
         }
     }
 
-    //启动循环读取线程
+    /**
+     * 启动循环读取线程
+     */
     public void startResponseThread() {
         setState(SerialState.RUN);
         stopResponseThread();
@@ -207,12 +218,15 @@ public class SerialPort {
         serialReadThread.setStateListener(new ReadThreadStateListener() {
             @Override
             public void setState(int i) {
-                stopResponseThread();
+                stop();
             }
         });
         serialReadThread.start();
     }
 
+    /**
+     * 停止循环读取线程
+     */
     private void stopResponseThread() {
         if (serialReadThread != null) {
             try {
@@ -225,22 +239,18 @@ public class SerialPort {
         }
     }
 
-    public void send(byte[] msg, SerialReadListener listener) {
-        setReadListener(listener);
-        send(msg);
-    }
-
     public void send(byte[] msg) {
-        if (mFileOutputStream != null) {
+        SerialState state = getState();
+        if(state!=SerialState.RUN){
+            sendError(new AppException(AppErrorCode.SERIAL_NOT_START));
+        }else{
             try {
                 setLog("发送数据：" + Wbyte.bcdToString(msg));
                 this.mFileOutputStream.write(msg);
             } catch (Exception e) {
                 e.printStackTrace();
-                sendError(new AppException("发送数据失败"));
+                sendError(new AppException(AppErrorCode.SERIAL_DEND_ERROR));
             }
-        } else {
-            sendError(new AppException("串口未打开"));
         }
     }
 

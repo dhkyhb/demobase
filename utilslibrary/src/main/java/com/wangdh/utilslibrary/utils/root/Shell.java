@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.wangdh.utilslibrary.utils.TimeUtils;
 import com.wangdh.utilslibrary.utils.file.FileSDTool;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

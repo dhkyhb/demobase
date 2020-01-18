@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 import com.wangdh.demolist.ui.fragment.TextFragment;
 import com.wangdh.demolist.ui.PXActivity;
 import com.wangdh.utilslibrary.utils.BCDHelper;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -120,7 +120,12 @@ public class Arith {
         BigDecimal b2 = new BigDecimal(v2);
         return b1.divide(b2, 2, BigDecimal.ROUND_HALF_UP).toString();
     }
-
+    //不满1的都不算
+    public static String div2(String v1, String v2) {
+        BigDecimal b1 = new BigDecimal(v1);
+        BigDecimal b2 = new BigDecimal(v2);
+        return b1.divide(b2, 2, BigDecimal.ROUND_DOWN).toString();
+    }
     public static String div(String v1, String v2, int scale) {
         if (scale < 0) {
             throw new IllegalArgumentException(

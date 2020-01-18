@@ -2,17 +2,27 @@ package com.wangdh.utilslibrary.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -177,5 +187,152 @@ public class TDevice {
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * Android 6.0 之前（不包括6.0）获取mac地址
+     * 必须的权限 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+     *
+     * @param context * @return
+     */
+    public static String getMacDefault(Context context) {
+        TLog.e("小于6.0系统的mac");
+        String mac = "02:00:00:00:00:00";
+        if (context == null) {
+            return mac;
+        }
+
+        WifiManager wifi = (WifiManager) context.getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
+        if (wifi == null) {
+            return mac;
+        }
+        WifiInfo info = null;
+        try {
+            info = wifi.getConnectionInfo();
+        } catch (Exception e) {
+        }
+        if (info == null) {
+            return null;
+        }
+        mac = info.getMacAddress();
+        if (!TextUtils.isEmpty(mac)) {
+            mac = mac.toUpperCase(Locale.ENGLISH);
+        }
+        return mac;
+    }
+
+    /**
+     * Android 6.0-Android 7.0 获取mac地址
+     */
+    public static String getMacAddress() {
+        TLog.e("6.0~7.0系统的mac");
+
+        String WifiAddress = "02:00:00:00:00:00";
+        try {
+            WifiAddress = new BufferedReader(new FileReader(new File("/sys/class/net/wlan0/address"))).readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return WifiAddress;
+    }
+
+    /**
+     * Android 7.0之后获取Mac地址
+     * 遍历循环所有的网络接口，找到接口是 wlan0
+     * 必须的权限 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+     * @return
+     */
+    /**
+     * 遍历循环所有的网络接口，找到接口是 wlan0
+     * 必须的权限 <uses-permission android:name="android.permission.INTERNET" />
+     *
+     * @return
+     */
+    private static String getMacFromHardware() {
+        TLog.e("7.0系统的mac");
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:", b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "02:00:00:00:00:00";
+    }
+
+    private static String mac = "";
+
+    /**
+     * 获取mac地址（适配所有Android版本）
+     * 添加<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+     * @return
+     */
+    public static String getMac(Context context) {
+        if (!TextUtils.isEmpty(mac)) {
+            return mac;
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            mac = getMacDefault(context);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            mac = getMacAddress();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mac = getMacFromHardware();
+        }
+        return mac;
+    }
+
+    public static String getSN() {
+        String serialNumber = Build.SERIAL;
+        return serialNumber;
+    }
+
+    public static String getVersionName(Context context) {
+        PackageManager manager = context.getPackageManager();
+        String name = "";
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            name = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
+    /**
+     * 获取版本号
+     *
+     * @param context 上下文
+     *
+     * @return 版本号
+     */
+    public static int getVersionCode(Context context) {
+        //获取包管理器
+        PackageManager pm = context.getPackageManager();
+        //获取包信息
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+            //返回版本号
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

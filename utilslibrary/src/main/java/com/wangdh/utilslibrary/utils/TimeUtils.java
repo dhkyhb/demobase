@@ -98,6 +98,9 @@ public class TimeUtils {
         return time1;
     }
 
+    public static String getCurrentTimeFor1() {
+        return getCurrentTime(format_1);
+    }
     public static String getCurrentTimeFor2() {
         return getCurrentTime(format_2);
     }

@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 import com.wangdh.utilslibrary.utils.root.Shell;
 
 import java.util.List;

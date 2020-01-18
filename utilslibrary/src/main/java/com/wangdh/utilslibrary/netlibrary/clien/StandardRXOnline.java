@@ -70,51 +70,10 @@ public class StandardRXOnline {
         initOnlineContext();
         onlineContext.setContext(context);
         onlineContext.setOnlineConfig(onlineConfig);
-
-        OnlineConfig onlineConfig = getConfig();
-        if (onlineConfig.isShowWait && onlineConfig.waitDialog != null) {
-            onlineConfig.waitDialog.show();
-        }
-        DisposableObserver<T> disposableObserver = new DisposableObserver<T>() {
-            @Override
-            protected void onStart() {
-                super.onStart();
-
-            }
-
-            @Override
-            public void onNext(T t) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                OnlineConfig onlineConfig = getConfig();
-                if (onlineConfig.isShowError) {
-
-                    if (e instanceof AppException) {
-                        if (onlineConfig.isErrorToast) {
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onComplete() {
-                OnlineConfig onlineConfig = getConfig();
-                if (onlineConfig.isShowWait && onlineConfig.waitDialog != null && onlineConfig.waitDialog.isShowing()) {
-                    onlineConfig.waitDialog.dismiss();
-                }
-
-            }
-        };
-
         if (getLifecycleOwner() == null) {
             Observable<T> tObservable = obs.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
             tObservable.subscribe(observer);
-            tObservable.subscribe(disposableObserver);
         } else {
             ObservableSubscribeProxy<T> ss = obs
                     .subscribeOn(Schedulers.io())
@@ -122,9 +81,7 @@ public class StandardRXOnline {
                     //添加泛型原因，.as返回Object导致无法继续走下去.
                     .as(this.<T>transformer());
             ss.subscribe(observer);
-            ss.subscribe(disposableObserver);
         }
-
     }
 
     //获取api
@@ -136,6 +93,7 @@ public class StandardRXOnline {
         return this.onlineConfig.retrofit.create(service);
     }
 
+//    ————————————————————生命周期事件》》》》》》》》》》》》》》》》》》》》》
     public LifecycleOwner getLifecycleOwner() {
         return lifecycleOwner;
     }
@@ -143,7 +101,6 @@ public class StandardRXOnline {
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         this.lifecycleOwner = lifecycleOwner;
     }
-
     // 设置msg 关闭事件
     //ActivityEvent.STOP
     private Lifecycle.Event event = Lifecycle.Event.ON_STOP;
@@ -173,6 +130,16 @@ public class StandardRXOnline {
     private <T> AutoDisposeConverter<T> transformer() {
         return autoDisposable(AndroidLifecycleScopeProvider
                 .from(getLifecycleOwner(), (getEvent() != null ? getEvent() : Lifecycle.Event.ON_STOP)));
+    }
+//   《《《《《《《《《《《《《《《《《《《生命周期事件————————————————————
+
+    public void onOnlineStart(){
+    }
+
+    public void onOnlineComplete(){
+    }
+
+    public void onOnlineError(Throwable e){
     }
 
 }

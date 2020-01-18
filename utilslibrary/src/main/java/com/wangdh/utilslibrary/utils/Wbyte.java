@@ -74,7 +74,11 @@ public class Wbyte {
         Integer x = Integer.parseInt(s, 16);
         return x.intValue();
     }
-
+    public static int toIntFor16(byte msg) {
+        String s = BCDHelper.bcdToString(new byte[] {msg});
+        Integer x = Integer.parseInt(s, 16);
+        return x.intValue();
+    }
     //把表示10进制的byte 转换成10进制数字
     public static int toIntFor10(byte[] msg) {
         String s = bcdToString(msg);
@@ -258,4 +262,50 @@ public class Wbyte {
         else
             return (char) (-1);
     }
+
+    public static byte[] StrToBCD(String str) {
+        return StrToBCD(str, str.length());
+    }
+
+
+    public static byte[] StrToBCD(String str, int numlen) {
+        if (numlen % 2 != 0)
+            numlen++;
+
+        while (str.length() < numlen) {
+            str = "0" + str;  //前导补0
+        }
+
+        byte[] bStr = new byte[str.length() / 2];
+        char[] cs = str.toCharArray();
+        int i = 0;
+        int iNum = 0;
+        for (i = 0; i < cs.length; i += 2) {
+            //TODO: 过滤空格
+            int iTemp = 0;
+            if (cs[i] >= '0' && cs[i] <= '9') {
+                iTemp = (cs[i] - '0') << 4;
+            } else {
+                //  判断是否为a~f
+                if (cs[i] >= 'a' && cs[i] <= 'f') {
+                    cs[i] -= 32;
+                }
+                iTemp = (cs[i] - '0' - 7) << 4;
+            }
+            //  处理低位
+            if (cs[i + 1] >= '0' && cs[i + 1] <= '9') {
+                iTemp += cs[i + 1] - '0';
+            } else {
+                //  判断是否为a~f
+                if (cs[i + 1] >= 'a' && cs[i + 1] <= 'f') {
+                    cs[i + 1] -= 32;
+                }
+                iTemp += cs[i + 1] - '0' - 7;
+            }
+            bStr[iNum] = (byte) iTemp;
+            iNum++;
+        }
+        return bStr;
+    }
+
 }

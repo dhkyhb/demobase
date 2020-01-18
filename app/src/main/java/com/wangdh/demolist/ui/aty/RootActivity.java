@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.wangdh.demolist.R;
 import com.wangdh.demolist.service.StartAppService;
 import com.wangdh.utilslibrary.utils.TimeUtils;
-import com.wangdh.utilslibrary.utils.logger.TLog;
+import com.wangdh.utilslibrary.utils.TLog;
 import com.wangdh.utilslibrary.utils.root.Shell;
 
 import java.util.List;

@@ -46,6 +46,12 @@ public class AppException extends Throwable {
 
     }
 
+    public AppException(AppErrorCode serialCheckBitError) {
+        super(serialCheckBitError.getMessage());
+        this.errorCode = serialCheckBitError.getCode();
+        this.errorMsg = serialCheckBitError.getMessage();
+    }
+
     public String getErrorCode() {
         return errorCode;
     }
